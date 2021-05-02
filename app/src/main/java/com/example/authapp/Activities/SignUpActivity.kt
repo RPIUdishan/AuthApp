@@ -1,8 +1,13 @@
+@file:Suppress("PackageName")
+
 package com.example.authapp.Activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.authapp.R
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+
 
 class SignUpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

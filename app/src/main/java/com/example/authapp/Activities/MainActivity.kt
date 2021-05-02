@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         //sign up btn action
         btn_main_screen_sign_up.setOnClickListener {
-            startActivity(Intent(applicationContext, SignInActivity::class.java))
+            startActivity(Intent(applicationContext, SignUpActivity::class.java))
         }
     }
 }
