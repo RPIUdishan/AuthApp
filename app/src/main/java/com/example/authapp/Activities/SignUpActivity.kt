@@ -69,8 +69,6 @@ class SignUpActivity : AppCompatActivity() {
                 if (validationCheckInEmailPwdAuth()) {
                     Log.d("Sign Up - emailpwd", "Ok")
                     createAccount(editTextEmail.text.toString(), editTextPassword.text.toString())
-//                    userDataSave(auth.currentUser.email, editTextUsername.text.toString(), selectedPhotoUri.toString())
-//                    startActivity(Intent(applicationContext, HomeActivity::class.java))
                 }
             } else {
                 val snack = Snackbar.make(it, "No Internet Connect", Snackbar.LENGTH_LONG)
