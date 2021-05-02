@@ -10,8 +10,10 @@ import android.os.Looper
 import androidx.appcompat.app.ActionBar
 import com.example.authapp.Constants.TimeConstants
 import com.example.authapp.R
+import com.google.firebase.auth.FirebaseAuth
 
 class SpalashActivity : AppCompatActivity() {
+
     private val timeConstantObj = TimeConstants()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +29,8 @@ class SpalashActivity : AppCompatActivity() {
             finish()
         }, timeConstantObj.SPLASH_TIME_OUT.toLong())
     }
+
+
 
     private fun actionBarHide(){
         val ab: ActionBar? = supportActionBar
