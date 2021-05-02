@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
+    //firebase plugins
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -47,5 +49,6 @@ dependencies {
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     //facebook authentication dependency
     implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
-
+    //firebase BOM
+    implementation platform('com.google.firebase:firebase-bom:27.1.0')
 }
