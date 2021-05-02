@@ -25,8 +25,8 @@ class SpalashActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this,
                 MainActivity::class.java)
-            startActivity(intent)
             finish()
+            startActivity(intent)
         }, timeConstantObj.SPLASH_TIME_OUT.toLong())
     }
 

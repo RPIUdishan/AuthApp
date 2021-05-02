@@ -37,7 +37,9 @@ class MainActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
         if(currentUser != null){
             Log.d("Logged", currentUser.uid)
-            startActivity(Intent(applicationContext, HomeActivity::class.java))
+            var intent = Intent(applicationContext, HomeActivity::class.java)
+            finish()
+            startActivity(intent)
         }
     }
 }

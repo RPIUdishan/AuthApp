@@ -30,5 +30,8 @@ class HomeActivity : AppCompatActivity() {
 
     private fun signOutOperation(){
         auth.signOut()
+        var intent = Intent(applicationContext, MainActivity::class.java)
+        finish()
+        startActivity(intent)
     }
 }
