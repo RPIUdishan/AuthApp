@@ -142,6 +142,7 @@ class SignUpActivity : AppCompatActivity() {
     //firebase authentication
     private fun userDataSave(email: String, username: String, photoUri: String){
         Log.d("userDataSave", "Okkkkkkkkkkkkkkkkkkkkk")
+        Log.d("URI", photoUri)
         val user: User = User(email, username, photoUri)
         firestore.collection("users")
             .document(auth.currentUser.uid)

@@ -106,24 +106,4 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextUsernameInUserProfile" />
 
 
-    <TextView
-        android:id="@+id/textViewPasswordProfile"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="36dp"
-        android:text="@string/password"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewEmailProfile" />
-
-    <EditText
-        android:id="@+id/editTextPasswordInUserProfile"
-        android:layout_width="275dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="12dp"
-        android:hint="@string/password"
-        app:layout_constraintStart_toEndOf="@+id/textViewPasswordProfile"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmailInUserProfile" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
