@@ -6,4 +6,124 @@
     android:layout_height="match_parent"
     tools:context=".Activities.HomeActivity">
 
+    <TextView
+        android:id="@+id/textViewProfileTopic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Your Information"
+        android:textAlignment="center"
+        android:textColor="@color/main_color"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgViewUserProfile"
+        android:layout_width="145dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewProfileTopic"
+        app:srcCompat="@drawable/com_facebook_profile_picture_blank_portrait" />
+
+    <TextView
+        android:id="@+id/textViewImageUpload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/change_profile_picture"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgViewUserProfile" />
+
+    <TextView
+        android:id="@+id/textViewUserIdProfile"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="80dp"
+        android:text="@string/user_id"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgViewUserProfile"
+        app:layout_goneMarginLeft="20dp" />
+
+    <EditText
+        android:id="@+id/editTextUidInUserProfile"
+        android:layout_width="275dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="56dp"
+        android:hint="@string/user_id"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textViewUserIdProfile"
+        app:layout_constraintTop_toBottomOf="@+id/imgViewUserProfile" />
+
+    <TextView
+        android:id="@+id/textViewUsernameProfile"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="48dp"
+        android:text="@string/username"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewUserIdProfile" />
+
+
+    <EditText
+        android:id="@+id/editTextUsernameInUserProfile"
+        android:layout_width="275dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="20dp"
+        android:focusable="false"
+        android:hint="@string/username"
+        app:layout_constraintStart_toEndOf="@+id/textViewUsernameProfile"
+        app:layout_constraintTop_toBottomOf="@+id/editTextUidInUserProfile" />
+
+    <TextView
+        android:id="@+id/textViewEmailProfile"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/email"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewUsernameProfile" />
+
+    <EditText
+        android:id="@+id/editTextEmailInUserProfile"
+        android:layout_width="275dp"
+        android:layout_height="45dp"
+        android:hint="@string/email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textViewEmailProfile"
+        app:layout_constraintTop_toBottomOf="@+id/editTextUsernameInUserProfile" />
+
+
+    <TextView
+        android:id="@+id/textViewPasswordProfile"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="36dp"
+        android:text="@string/password"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEmailProfile" />
+
+    <EditText
+        android:id="@+id/editTextPasswordInUserProfile"
+        android:layout_width="275dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="12dp"
+        android:hint="@string/password"
+        app:layout_constraintStart_toEndOf="@+id/textViewPasswordProfile"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmailInUserProfile" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
