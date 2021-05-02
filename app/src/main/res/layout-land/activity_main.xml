@@ -9,39 +9,49 @@
     android:theme="@style/AppTheme.NoActionBar"
     >
 
-
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/main_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:layout_marginTop="0dp"
+        app:cardBackgroundColor="@color/main_color"
+        app:cardElevation="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.Cut"
+        tools:ignore="MissingConstraints">
 
 
         <TextView
             android:id="@+id/app_logo_name"
-            android:layout_width="match_parent"
+            android:layout_width="191dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="180dp"
             android:fontFamily="cursive"
+            android:rotation="-15"
             android:text="@string/app_name"
-            android:textSize="50dp"
             android:textAlignment="center"
-            android:textColor="@color/main_color"
-            android:textStyle="italic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="50dp"
+            android:textStyle="italic" />
+    </com.google.android.material.card.MaterialCardView>
 
     <Button
         android:id="@+id/btn_main_screen_sign_in"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="164dp"
         android:layout_marginRight="20dp"
+        android:layout_marginTop="100dp"
         android:backgroundTint="@color/main_color"
-        android:text="@string/btn_main_sign_in"
-        android:textSize="20dp"
         app:cornerRadius="50dp"
+        android:textSize="20dp"
+        android:text="@string/btn_main_sign_in"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_logo_name" />
+        app:layout_constraintTop_toBottomOf="@id/main_card_view" />
 
     <Button
         android:id="@+id/btn_main_screen_sign_up"
@@ -59,4 +69,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_main_screen_sign_in"
         app:layout_constraintVertical_bias="0.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
