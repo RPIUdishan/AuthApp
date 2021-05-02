@@ -29,10 +29,4 @@ class SpalashActivity : AppCompatActivity() {
         }, timeConstantObj.SPLASH_TIME_OUT.toLong())
     }
 
-
-
-    private fun actionBarHide(){
-        val ab: ActionBar? = supportActionBar
-        ab?.hide()
-    }
 }

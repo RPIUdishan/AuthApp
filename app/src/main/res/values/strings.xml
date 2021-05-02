@@ -29,9 +29,8 @@
 
     <!--    <string name="facebook_app_id">2913832942195243</string>-->
     <!--    <string name="fb_login_protocol_scheme">fb2913832942195243</string>-->
-    <string name="facebook_app_id">290565305944755</string>
-    <string name="fb_login_protocol_scheme">fb290565305944755</string>
-
+    <string name="facebook_app_id">298878948375266</string>
+    <string name="fb_login_protocol_scheme">fb298878948375266</string>
 
     <string name="set_up_your_profile">Set Up Your Profile</string>
     <string name="choose_a_image">Choose a Image</string>

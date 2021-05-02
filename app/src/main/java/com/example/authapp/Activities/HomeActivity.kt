@@ -7,6 +7,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.authapp.R
+import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -56,6 +57,9 @@ class HomeActivity : AppCompatActivity() {
             applicationContext,
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
         ).signOut()
+
+        LoginManager.getInstance().logOut();
+
         auth.signOut()
         var intent = Intent(applicationContext, MainActivity::class.java)
         finish()

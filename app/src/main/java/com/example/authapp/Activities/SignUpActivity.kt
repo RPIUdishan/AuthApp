@@ -15,6 +15,7 @@ import com.example.authapp.CommonUtils.CommonUtils
 import com.example.authapp.Constants.Constants
 import com.example.authapp.Models.User
 import com.example.authapp.R
+import com.facebook.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -26,6 +27,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.*
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginResult
+import com.facebook.login.widget.LoginButton
+import com.google.firebase.auth.FacebookAuthProvider
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -35,6 +40,8 @@ class SignUpActivity : AppCompatActivity() {
     private var selectedPhotoUri: Uri? = null
     private lateinit var firestore: FirebaseFirestore
     private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var callbackManager: CallbackManager
+    private lateinit var buttonFacebookLogin: LoginButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
@@ -74,6 +81,24 @@ class SignUpActivity : AppCompatActivity() {
         textViewChooseImage.setOnClickListener {
             startFileChooser()
         }
+
+        callbackManager = CallbackManager.Factory.create()
+        buttonFacebookLogin = btnFacebookSignUp
+        buttonFacebookLogin.setPermissions("email", "public_profile")
+        buttonFacebookLogin.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(loginResult: LoginResult) {
+                Log.d("FB", "facebook:onSuccess:$loginResult")
+                handleFacebookAccessToken(loginResult.accessToken)
+            }
+
+            override fun onCancel() {
+                Log.d("FB", "facebook:onCancel")
+            }
+
+            override fun onError(error: FacebookException) {
+                Log.d("FB", "facebook:onError", error)
+            }
+        })
 
 
     }
@@ -242,6 +267,7 @@ class SignUpActivity : AppCompatActivity() {
                 Log.w("Google Sign in", "$e")
             }
         }
+        else{ callbackManager.onActivityResult(requestCode, resultCode, data) }
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
@@ -258,6 +284,28 @@ class SignUpActivity : AppCompatActivity() {
                     Log.w("firebaseAuthWithGoogle", "signInWithCredential:failure", task.exception)
                 }
             }
+    }
+
+    private fun handleFacebookAccessToken(token: AccessToken) {
+        Log.d("handleFacebook", "handleFacebookAccessToken:$token")
+
+        val credential = FacebookAuthProvider.getCredential(token.token)
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d("handleFacebook", "signInWithCredential:success")
+                        val user = auth.currentUser
+                        userDataSave(user.email.toString(), user.displayName, user.photoUrl.toString() )
+
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w("handleFacebook", "signInWithCredential:failure", task.exception)
+                        Toast.makeText(baseContext, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show()
+
+                    }
+                }
     }
 
 }
