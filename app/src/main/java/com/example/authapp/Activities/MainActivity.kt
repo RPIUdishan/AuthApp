@@ -31,15 +31,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     //on start method
-    override fun onStart() {
-        super.onStart()
-        //check user user loggd or not
-        val currentUser = auth.currentUser
-        if(currentUser != null){
-            Log.d("Logged", currentUser.uid)
-            var intent = Intent(applicationContext, HomeActivity::class.java)
-            finish()
-            startActivity(intent)
-        }
-    }
+//    override fun onStart() {
+//        super.onStart()
+//        //check user user loggd or not
+//        val currentUser = auth.currentUser
+//        if(currentUser != null){
+//            Log.d("Logged", currentUser.uid)
+//            var intent = Intent(applicationContext, HomeActivity::class.java)
+//            finish()
+//            startActivity(intent)
+//        }
+//    }
 }

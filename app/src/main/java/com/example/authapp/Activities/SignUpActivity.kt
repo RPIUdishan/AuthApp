@@ -41,9 +41,8 @@ class SignUpActivity : AppCompatActivity() {
                 if (validationCheckInEmailPwdAuth()) {
                     Log.d("Sign Up - emailpwd", "Ok")
                     createAccount(editTextEmail.text.toString(), editTextPassword.text.toString())
-                    Log.d("createAccount", auth.currentUser.uid)
-                    userDataSave(auth.currentUser.email, editTextUsername.text.toString(), selectedPhotoUri.toString())
-//                    startActivity(Intent(applicationContext, SignInActivity::class.java))
+//                    userDataSave(auth.currentUser.email, editTextUsername.text.toString(), selectedPhotoUri.toString())
+//                    startActivity(Intent(applicationContext, HomeActivity::class.java))
                 }
             } else {
                 val snack = Snackbar.make(it, "No Internet Connect", Snackbar.LENGTH_LONG)
@@ -127,7 +126,8 @@ class SignUpActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("createAccount", "createUserWithEmail:success")
-//                    val currentUser = auth.currentUser
+                    val currentUser = auth.currentUser
+                    userDataSave(currentUser.email, editTextUsername.text.toString(), selectedPhotoUri.toString())
                     Toast.makeText(baseContext, "Authenticated", Toast.LENGTH_SHORT).show()
                 }
                 else {
@@ -141,9 +141,11 @@ class SignUpActivity : AppCompatActivity() {
 
     //firebase authentication
     private fun userDataSave(email: String, username: String, photoUri: String){
+        Log.d("userDataSave", "Okkkkkkkkkkkkkkkkkkkkk")
         var downloadUri: String = ""
         if (selectedPhotoUri != null) {
             val filename = UUID.randomUUID().toString()
+
             val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
 
             ref.putFile(selectedPhotoUri!!)
@@ -163,11 +165,13 @@ class SignUpActivity : AppCompatActivity() {
             .set(user)
             .addOnSuccessListener {
                 Toast.makeText(applicationContext, "Successfully registered", Toast.LENGTH_SHORT).show()
+                Log.d("userDataSave", "user collection success")
                 finish()
                 startActivity(Intent(applicationContext, HomeActivity::class.java))
             }
             .addOnFailureListener{
                 Toast.makeText(applicationContext, "Failed to register", Toast.LENGTH_SHORT).show()
+                Log.d("userDataSave", it.toString())
                 finish()
                 startActivity(Intent(applicationContext, SignUpActivity::class.java))
             }
