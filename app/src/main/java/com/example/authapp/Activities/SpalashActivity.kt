@@ -8,13 +8,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.ActionBar
-import com.example.authapp.Constants.TimeConstants
+import com.example.authapp.Constants.Constants
 import com.example.authapp.R
-import com.google.firebase.auth.FirebaseAuth
 
 class SpalashActivity : AppCompatActivity() {
 
-    private val timeConstantObj = TimeConstants()
+    private val timeConstantObj = Constants()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_spalsh_screen)

@@ -12,13 +12,16 @@ import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import com.example.authapp.CommonUtils.CommonUtils
+import com.example.authapp.Constants.Constants
 import com.example.authapp.Models.User
 import com.example.authapp.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_sign_up.*
@@ -27,6 +30,7 @@ import java.util.*
 
 class SignUpActivity : AppCompatActivity() {
     private val utils: CommonUtils = CommonUtils()
+    private val constant: Constants = Constants()
     private lateinit var auth:FirebaseAuth
     private var selectedPhotoUri: Uri? = null
     private lateinit var firestore: FirebaseFirestore
@@ -47,6 +51,12 @@ class SignUpActivity : AppCompatActivity() {
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
+        btnGoogleSignUp.setOnClickListener {
+            Log.d("btnGoogle", "Clicked")
+            val googleSignInIntent = googleSignInClient.signInIntent
+            startActivityForResult(googleSignInIntent, constant.RC_SIGN_IN)
+        }
+
         btnSignUp.setOnClickListener {
             if (utils.isNetworkAvailable(applicationContext)) {
                 if (validationCheckInEmailPwdAuth()) {
@@ -65,9 +75,7 @@ class SignUpActivity : AppCompatActivity() {
             startFileChooser()
         }
 
-        btnGoogleSignUp.setOnClickListener {
 
-        }
     }
 
     override fun onStart() {
@@ -198,8 +206,10 @@ class SignUpActivity : AppCompatActivity() {
 
     //Image Setting Method
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.d("Google Sign in", "$requestCode")
+        Log.d("Google Sign in", "${requestCode == constant.RC_SIGN_IN}")
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode==111 && resultCode == Activity.RESULT_OK && data != null){
+        if(requestCode==constant.RC_IMAGE_URI && resultCode == Activity.RESULT_OK && data != null){
             var tempUri = data.data!!
 
                 val filename = UUID.randomUUID().toString()
@@ -219,8 +229,35 @@ class SignUpActivity : AppCompatActivity() {
             var bitmap = MediaStore.Images.Media.getBitmap(contentResolver,tempUri)
             imgViewProfileUploader.setImageBitmap(bitmap)
         }
+        else if(requestCode == constant.RC_SIGN_IN){
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            Log.d("Google Sign indata", "$data")
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                val account = task.getResult(ApiException::class.java)!!
+                Log.d("Google Sign in", "firebaseAuthWithGoogle:" + account.id)
+                firebaseAuthWithGoogle(account.idToken!!)
+            } catch (e: ApiException) {
+                // Google Sign In failed, update UI appropriately
+                Log.w("Google Sign in", "$e")
+            }
+        }
     }
 
-
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("firebaseAuthWithGoogle", "signInWithCredential:success")
+                    val user = auth.currentUser
+                    userDataSave(user.email.toString(), user.displayName, user.photoUrl.toString() )
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("firebaseAuthWithGoogle", "signInWithCredential:failure", task.exception)
+                }
+            }
+    }
 
 }
