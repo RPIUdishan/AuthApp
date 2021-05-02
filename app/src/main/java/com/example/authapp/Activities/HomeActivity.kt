@@ -3,6 +3,7 @@ package com.example.authapp.Activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.bumptech.glide.Glide
@@ -22,9 +23,7 @@ class HomeActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-        editTextUidInUserProfile.setText(auth.currentUser?.uid.toString())
-        editTextUsernameInUserProfile.setText(auth.currentUser.displayName)
-
+        editTextUidInUserProfile.setText(auth.currentUser.uid)
         firestore.collection("users").document(auth.currentUser.uid).get()
             .addOnSuccessListener {
                 var username = it["username"].toString()
@@ -32,8 +31,9 @@ class HomeActivity : AppCompatActivity() {
                 var imageUri = it["profileImageUrl"].toString()
                 editTextUsernameInUserProfile.setText(username)
                 editTextEmailInUserProfile.setText(email)
-//                imgViewUserProfile.imageURI = Uri.parse(imageUri)
-                Glide.with(applicationContext).load(imageUri).into(imgViewUserProfile)
+                if (imageUri.isEmpty()) {
+                    Glide.with(applicationContext).load(imageUri).into(imgViewUserProfile)
+                }
             }
 
     }

@@ -20,15 +20,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/imgViewUserProfile"
-        android:layout_width="145dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="128dp"
+        android:layout_height="129dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/com_facebook_profile_picture_blank_portrait"
+        app:civ_border_color="@color/main_color"
+        app:civ_border_width="1dp"
+        app:civ_shadow="true"
+        app:civ_shadow_color="@color/main_color"
+        app:civ_shadow_radius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewProfileTopic"
-        app:srcCompat="@drawable/com_facebook_profile_picture_blank_portrait" />
+        app:layout_constraintTop_toBottomOf="@id/textViewProfileTopic"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/textViewImageUpload"

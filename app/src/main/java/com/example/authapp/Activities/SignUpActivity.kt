@@ -14,6 +14,9 @@ import android.widget.Toast
 import com.example.authapp.CommonUtils.CommonUtils
 import com.example.authapp.Models.User
 import com.example.authapp.R
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -27,6 +30,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var auth:FirebaseAuth
     private var selectedPhotoUri: Uri? = null
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var googleSignInClient: GoogleSignInClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
@@ -35,6 +39,13 @@ class SignUpActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         //initialised firestore instance
         firestore = FirebaseFirestore.getInstance()
+
+        // Configure Google Sign In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         btnSignUp.setOnClickListener {
             if (utils.isNetworkAvailable(applicationContext)) {
@@ -52,6 +63,19 @@ class SignUpActivity : AppCompatActivity() {
 
         textViewChooseImage.setOnClickListener {
             startFileChooser()
+        }
+
+        btnGoogleSignUp.setOnClickListener {
+
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (auth.currentUser != null){
+            val intent = Intent(applicationContext, HomeActivity::class.java)
+            finish()
+            startActivity(intent)
         }
     }
 
@@ -161,7 +185,6 @@ class SignUpActivity : AppCompatActivity() {
             }
     }
 
-
     private fun startFileChooser(){
         var intent = Intent()
         intent.setType("image/*")
@@ -197,6 +220,7 @@ class SignUpActivity : AppCompatActivity() {
             imgViewProfileUploader.setImageBitmap(bitmap)
         }
     }
+
 
 
 }
