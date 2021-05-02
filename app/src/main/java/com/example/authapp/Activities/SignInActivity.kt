@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.example.authapp.CommonUtils.CommonUtils
 import com.example.authapp.Constants.Constants
@@ -19,6 +20,10 @@ import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
+import com.github.ybq.android.spinkit.sprite.Sprite
+import com.github.ybq.android.spinkit.style.Circle
+import com.github.ybq.android.spinkit.style.DoubleBounce
+import com.github.ybq.android.spinkit.style.Wave
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -44,14 +49,21 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
+        var  circle : Sprite = Circle()
+        progressBarSignIn.setIndeterminateDrawable(circle)
+
+        progressBarSignIn.visibility = View.GONE
+
         //initialised firebase auth
         auth = FirebaseAuth.getInstance()
 
         btnSignIn.setOnClickListener {
             if (utils.isNetworkAvailable(applicationContext)) {
+                progressBarSignIn.visibility = View.VISIBLE
                 if (validationCheckInEmailPwdAuth()) {
                     Log.d("Sign In - emailpwd", "Ok")
                     signInWithEmailPassword(editTextEmailSignIn.text.toString(), editTextPassword.text.toString())
+                    progressBarSignIn.visibility = View.GONE
                 }
             } else {
                 val snack = Snackbar.make(it, "No Internet Connect", Snackbar.LENGTH_LONG)
@@ -99,8 +111,6 @@ class SignInActivity : AppCompatActivity() {
                 Log.d("FB", "facebook:onError", error)
             }
         })
-
-
     }
 
     //field validation for email password authentication
@@ -213,4 +223,6 @@ class SignInActivity : AppCompatActivity() {
                 }
             }
     }
+
+
 }
