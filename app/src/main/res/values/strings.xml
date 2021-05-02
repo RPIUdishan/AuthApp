@@ -1,3 +1,42 @@
 <resources>
     <string name="app_name">AuthApp</string>
+    <string name="btn_main_sign_up">Sign Up</string>
+    <string name="btn_main_sign_in">Sign In</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="or">Or</string>
+    <string name="google">Google</string>
+    <string name="facebook">Facebook</string>
+    <string name="sign_in">Sign In</string>
+    <string name="using_chatroom">Chat Rooms</string>
+    <string name="select_chatrooms">Select</string>
+    <string name="menu_item_profile">Profile</string>
+    <string name="menu_item_logout">Log Out</string>
+    <string name="user_id_value">User ID Value</string>
+    <string name="user_id">User ID</string>
+    <string name="username">Username</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_chatroom">Create ChatRoom</string>
+    <string name="chat_room">Chat Room</string>
+    <string name="chat_room_name">Chat Room Name</string>
+    <string name="chat_room_description">Chat Room Description</string>
+    <string name="please_sign_up">Please, Sign Up</string>
+    <string name="message">Message</string>
+    <string name="details">Details</string>
+    <string name="leave_chat_room">Leave Chat Room</string>
+
+    <!--    <string name="facebook_app_id">2913832942195243</string>-->
+    <!--    <string name="fb_login_protocol_scheme">fb2913832942195243</string>-->
+    <string name="facebook_app_id">290565305944755</string>
+    <string name="fb_login_protocol_scheme">fb290565305944755</string>
+
+
+    <string name="set_up_your_profile">Set Up Your Profile</string>
+    <string name="choose_a_image">Choose a Image</string>
+    <string name="enter_username">Enter Username</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="change_profile_picture">Change Profile Picture</string>
 </resources>
