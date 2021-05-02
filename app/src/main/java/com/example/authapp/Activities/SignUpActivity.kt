@@ -142,24 +142,7 @@ class SignUpActivity : AppCompatActivity() {
     //firebase authentication
     private fun userDataSave(email: String, username: String, photoUri: String){
         Log.d("userDataSave", "Okkkkkkkkkkkkkkkkkkkkk")
-        var downloadUri: String = ""
-        if (selectedPhotoUri != null) {
-            val filename = UUID.randomUUID().toString()
-
-            val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
-
-            ref.putFile(selectedPhotoUri!!)
-                .addOnSuccessListener {
-                    Log.d("SetingsProfileActivity", "Successfully uploaded image: ${it.metadata?.path}")
-
-                    ref.downloadUrl.addOnSuccessListener {
-                        Log.d("SettingProfile", "FileLocation $it")
-                        downloadUri = it.toString()
-                    }
-                }
-        }
-
-        val user: User = User(email, username, downloadUri)
+        val user: User = User(email, username, photoUri)
         firestore.collection("users")
             .document(auth.currentUser.uid)
             .set(user)
@@ -185,14 +168,34 @@ class SignUpActivity : AppCompatActivity() {
         startActivityForResult(Intent.createChooser(intent, "Choose Pictures"), 111)
     }
 
+    private fun setProfilePicUrl(selectedPhotoUri: Uri){
+        this.selectedPhotoUri = selectedPhotoUri
+    }
+
     //Image Setting Method
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode==111 && resultCode == Activity.RESULT_OK && data != null){
-            selectedPhotoUri = data.data!!
-            var bitmap = MediaStore.Images.Media.getBitmap(contentResolver,selectedPhotoUri)
+            var tempUri = data.data!!
+
+                val filename = UUID.randomUUID().toString()
+
+                val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
+
+                ref.putFile(tempUri!!)
+                    .addOnSuccessListener {
+                        Log.d("SetingsProfileActivity", "Successfully uploaded image: ${it.metadata?.path}")
+
+                        ref.downloadUrl.addOnSuccessListener {
+                            Log.d("SettingProfile", "FileLocation $it")
+                            setProfilePicUrl(it)
+                        }
+
+            }
+            var bitmap = MediaStore.Images.Media.getBitmap(contentResolver,tempUri)
             imgViewProfileUploader.setImageBitmap(bitmap)
         }
     }
+
 
 }
