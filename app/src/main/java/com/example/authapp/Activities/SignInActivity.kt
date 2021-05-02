@@ -13,11 +13,18 @@ import android.widget.Toast
 import com.example.authapp.CommonUtils.CommonUtils
 import com.example.authapp.Constants.Constants
 import com.example.authapp.R
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginResult
+import com.facebook.login.widget.LoginButton
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.storage.FirebaseStorage
@@ -31,6 +38,8 @@ class SignInActivity : AppCompatActivity() {
     private val utils: CommonUtils = CommonUtils()
     private lateinit var googleSignInClient: GoogleSignInClient
     private val constant: Constants = Constants()
+    private lateinit var callbackManager: CallbackManager
+    private lateinit var buttonFacebookLogin: LoginButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
@@ -71,6 +80,27 @@ class SignInActivity : AppCompatActivity() {
             val intent = Intent(applicationContext, SignUpActivity::class.java)
             startActivity(intent)
         }
+
+        callbackManager = CallbackManager.Factory.create()
+        buttonFacebookLogin =  btnFacebookSignIn
+        buttonFacebookLogin.setPermissions("email", "public_profile")
+        buttonFacebookLogin.registerCallback(callbackManager, object :
+            FacebookCallback<LoginResult> {
+            override fun onSuccess(loginResult: LoginResult) {
+                Log.d("FB", "facebook:onSuccess:$loginResult")
+                handleFacebookAccessToken(loginResult.accessToken)
+            }
+
+            override fun onCancel() {
+                Log.d("FB", "facebook:onCancel")
+            }
+
+            override fun onError(error: FacebookException) {
+                Log.d("FB", "facebook:onError", error)
+            }
+        })
+
+
     }
 
     //field validation for email password authentication
@@ -144,7 +174,7 @@ class SignInActivity : AppCompatActivity() {
                 Log.w("Google Sign in", "$e")
             }
         }
-//        else{ callbackManager.onActivityResult(requestCode, resultCode, data) }
+        else{ callbackManager.onActivityResult(requestCode, resultCode, data) }
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
@@ -159,6 +189,27 @@ class SignInActivity : AppCompatActivity() {
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("firebaseAuthWithGoogle", "signInWithCredential:failure", task.exception)
+                }
+            }
+    }
+
+    private fun handleFacebookAccessToken(token: AccessToken) {
+        Log.d("handleFacebook", "handleFacebookAccessToken:$token")
+
+        val credential = FacebookAuthProvider.getCredential(token.token)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("handleFacebook", "signInWithCredential:success")
+                    finish()
+                    startActivity(Intent(applicationContext, HomeActivity::class.java))
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("handleFacebook", "signInWithCredential:failure", task.exception)
+                    Toast.makeText(applicationContext, "Authentication failed.",
+                        Toast.LENGTH_SHORT).show()
+
                 }
             }
     }
