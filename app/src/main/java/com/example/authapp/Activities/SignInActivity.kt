@@ -66,6 +66,11 @@ class SignInActivity : AppCompatActivity() {
                 snack.show()
             }
         }
+
+        textViewSwitchToSignUP.setOnClickListener {
+            val intent = Intent(applicationContext, SignUpActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     //field validation for email password authentication
@@ -154,7 +159,6 @@ class SignInActivity : AppCompatActivity() {
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("firebaseAuthWithGoogle", "signInWithCredential:failure", task.exception)
-
                 }
             }
     }

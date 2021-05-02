@@ -27,10 +27,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.*
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.google.firebase.auth.FacebookAuthProvider
+import kotlinx.android.synthetic.main.activity_sign_up.editTextPassword
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -98,7 +98,10 @@ class SignUpActivity : AppCompatActivity() {
             }
         })
 
-
+        textViewSwitchToSignIN.setOnClickListener {
+            val intent = Intent(applicationContext, SignInActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onStart() {
