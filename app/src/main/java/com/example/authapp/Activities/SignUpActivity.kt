@@ -227,7 +227,6 @@ class SignUpActivity : AppCompatActivity() {
         this.selectedPhotoUri = selectedPhotoUri
     }
 
-    //Image Setting Method
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         Log.d("Google Sign in", "$requestCode")
         Log.d("Google Sign in", "${requestCode == constant.RC_SIGN_IN}")
