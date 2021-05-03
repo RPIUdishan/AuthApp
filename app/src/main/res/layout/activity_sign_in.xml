@@ -10,9 +10,10 @@
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/progressBarSignIn"
         style="@style/SpinKitView.Large.Circle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="163dp"
+        android:layout_height="168dp"
         android:layout_gravity="center"
+        android:visibility="invisible"
         app:SpinKit_Color="@color/main_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

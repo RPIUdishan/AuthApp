@@ -49,9 +49,6 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
-        var  circle : Sprite = Circle()
-        progressBarSignIn.setIndeterminateDrawable(circle)
-
         progressBarSignIn.visibility = View.GONE
 
         //initialised firebase auth
@@ -79,6 +76,7 @@ class SignInActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         btnGoogleSignIn.setOnClickListener {
+            progressBarSignIn.visibility = View.VISIBLE
             if (utils.isNetworkAvailable(applicationContext)) {
                 val signInIntent = googleSignInClient.signInIntent
                 startActivityForResult(signInIntent, constant.RC_SIGN_IN)
@@ -86,6 +84,7 @@ class SignInActivity : AppCompatActivity() {
                 val snack = Snackbar.make(it, "No Internet Connect", Snackbar.LENGTH_LONG)
                 snack.show()
             }
+            progressBarSignIn.visibility = View.GONE
         }
 
         textViewSwitchToSignUP.setOnClickListener {
@@ -111,6 +110,7 @@ class SignInActivity : AppCompatActivity() {
                 Log.d("FB", "facebook:onError", error)
             }
         })
+
     }
 
     //field validation for email password authentication
@@ -164,7 +164,6 @@ class SignInActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT).show()
                 }
             }
-        // [END sign_in_with_email]
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -213,6 +212,7 @@ class SignInActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("handleFacebook", "signInWithCredential:success")
                     finish()
+                    progressBarSignIn.visibility = View.GONE
                     startActivity(Intent(applicationContext, HomeActivity::class.java))
                 } else {
                     // If sign in fails, display a message to the user.

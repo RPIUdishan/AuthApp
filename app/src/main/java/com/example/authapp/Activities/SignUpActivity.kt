@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.example.authapp.CommonUtils.CommonUtils
 import com.example.authapp.Constants.Constants
@@ -30,6 +31,7 @@ import java.util.*
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.google.firebase.auth.FacebookAuthProvider
+import kotlinx.android.synthetic.main.activity_sign_in.*
 import kotlinx.android.synthetic.main.activity_sign_up.editTextPassword
 
 
@@ -50,7 +52,7 @@ class SignUpActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         //initialised firestore instance
         firestore = FirebaseFirestore.getInstance()
-
+        progressBarSignUp.visibility = View.GONE
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -60,11 +62,13 @@ class SignUpActivity : AppCompatActivity() {
 
         btnGoogleSignUp.setOnClickListener {
             Log.d("btnGoogle", "Clicked")
+            progressBarSignUp.visibility = View.VISIBLE
             val googleSignInIntent = googleSignInClient.signInIntent
             startActivityForResult(googleSignInIntent, constant.RC_SIGN_IN)
         }
 
         btnSignUp.setOnClickListener {
+            progressBarSignUp.visibility = View.VISIBLE
             if (utils.isNetworkAvailable(applicationContext)) {
                 if (validationCheckInEmailPwdAuth()) {
                     Log.d("Sign Up - emailpwd", "Ok")
@@ -74,6 +78,7 @@ class SignUpActivity : AppCompatActivity() {
                 val snack = Snackbar.make(it, "No Internet Connect", Snackbar.LENGTH_LONG)
                 snack.show()
             }
+            progressBarSignUp.visibility = View.GONE
         }
 
         textViewChooseImage.setOnClickListener {
@@ -209,12 +214,14 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Successfully registered", Toast.LENGTH_SHORT).show()
                 Log.d("userDataSave", "user collection success")
                 finish()
+                progressBarSignUp.visibility = View.GONE
                 startActivity(Intent(applicationContext, HomeActivity::class.java))
             }
             .addOnFailureListener{
                 Toast.makeText(applicationContext, "Failed to register", Toast.LENGTH_SHORT).show()
                 Log.d("userDataSave", it.toString())
                 finish()
+                progressBarSignUp.visibility = View.GONE
                 startActivity(Intent(applicationContext, SignUpActivity::class.java))
             }
     }
@@ -288,7 +295,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun handleFacebookAccessToken(token: AccessToken) {
         Log.d("handleFacebook", "handleFacebookAccessToken:$token")
-
+        progressBarSignUp.visibility = View.VISIBLE
         val credential = FacebookAuthProvider.getCredential(token.token)
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this) { task ->
