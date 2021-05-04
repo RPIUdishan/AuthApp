@@ -31,7 +31,6 @@ import java.util.*
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.google.firebase.auth.FacebookAuthProvider
-import kotlinx.android.synthetic.main.activity_sign_in.*
 import kotlinx.android.synthetic.main.activity_sign_up.editTextPassword
 
 
@@ -112,7 +111,7 @@ class SignUpActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         if (auth.currentUser != null){
-            val intent = Intent(applicationContext, HomeActivity::class.java)
+            val intent = Intent(applicationContext, ProfileActivity::class.java)
             finish()
             startActivity(intent)
         }
@@ -215,7 +214,7 @@ class SignUpActivity : AppCompatActivity() {
                 Log.d("userDataSave", "user collection success")
                 finish()
                 progressBarSignUp.visibility = View.GONE
-                startActivity(Intent(applicationContext, HomeActivity::class.java))
+                startActivity(Intent(applicationContext, ProfileActivity::class.java))
             }
             .addOnFailureListener{
                 Toast.makeText(applicationContext, "Failed to register", Toast.LENGTH_SHORT).show()

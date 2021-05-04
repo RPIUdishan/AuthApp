@@ -1,3 +1,5 @@
+@file:Suppress("PackageName")
+
 package com.example.authapp.Activities
 
 import android.content.Intent
@@ -12,16 +14,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_home.*
-import java.security.AccessController.getContext
+import kotlinx.android.synthetic.main.activity_profile.*
 
 
-class HomeActivity : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        setContentView(R.layout.activity_profile)
 
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()

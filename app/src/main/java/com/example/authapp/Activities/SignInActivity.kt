@@ -2,11 +2,9 @@
 
 package com.example.authapp.Activities
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -20,10 +18,6 @@ import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
-import com.github.ybq.android.spinkit.sprite.Sprite
-import com.github.ybq.android.spinkit.style.Circle
-import com.github.ybq.android.spinkit.style.DoubleBounce
-import com.github.ybq.android.spinkit.style.Wave
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -32,11 +26,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_sign_in.*
 import kotlinx.android.synthetic.main.activity_sign_in.editTextPassword
-import kotlinx.android.synthetic.main.activity_sign_up.*
-import java.util.*
 
 class SignInActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -156,7 +147,7 @@ class SignInActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("signInWithEmailPassword", "signInWithEmail:success")
                     finish()
-                    startActivity(Intent(applicationContext, HomeActivity::class.java))
+                    startActivity(Intent(applicationContext, ProfileActivity::class.java))
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("signInWithEmailPassword", "signInWithEmail:failure", task.exception)
@@ -194,7 +185,7 @@ class SignInActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("firebaseAuthWithGoogle", "signInWithCredential:success")
                     finish()
-                    startActivity(Intent(applicationContext, HomeActivity::class.java))
+                    startActivity(Intent(applicationContext, ProfileActivity::class.java))
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("firebaseAuthWithGoogle", "signInWithCredential:failure", task.exception)
@@ -213,7 +204,7 @@ class SignInActivity : AppCompatActivity() {
                     Log.d("handleFacebook", "signInWithCredential:success")
                     finish()
                     progressBarSignIn.visibility = View.GONE
-                    startActivity(Intent(applicationContext, HomeActivity::class.java))
+                    startActivity(Intent(applicationContext, ProfileActivity::class.java))
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("handleFacebook", "signInWithCredential:failure", task.exception)
