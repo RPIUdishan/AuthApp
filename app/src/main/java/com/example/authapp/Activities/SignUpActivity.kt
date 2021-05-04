@@ -14,7 +14,7 @@ import android.view.View
 import android.widget.Toast
 import com.example.authapp.CommonUtils.CommonUtils
 import com.example.authapp.Constants.Constants
-import com.example.authapp.Models.User
+import com.example.authapp.Models.UserModel
 import com.example.authapp.R
 import com.facebook.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -205,10 +205,10 @@ class SignUpActivity : AppCompatActivity() {
     private fun userDataSave(email: String, username: String, photoUri: String){
         Log.d("userDataSave", "Okkkkkkkkkkkkkkkkkkkkk")
         Log.d("URI", photoUri)
-        val user: User = User(email, username, photoUri)
+        val userModel: UserModel = UserModel(email, username, photoUri)
         firestore.collection("users")
             .document(auth.currentUser.uid)
-            .set(user)
+            .set(userModel)
             .addOnSuccessListener {
                 Toast.makeText(applicationContext, "Successfully registered", Toast.LENGTH_SHORT).show()
                 Log.d("userDataSave", "user collection success")

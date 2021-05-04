@@ -1,6 +1,6 @@
 package com.example.authapp.Models
 
-class User {
+class UserModel {
     var email: String = ""
     var username: String = ""
     var profileImageUrl: String = ""

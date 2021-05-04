@@ -147,7 +147,7 @@ class SignInActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("signInWithEmailPassword", "signInWithEmail:success")
                     finish()
-                    startActivity(Intent(applicationContext, ProfileActivity::class.java))
+                    startActivity(Intent(applicationContext, ChatRoomListActivity::class.java))
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("signInWithEmailPassword", "signInWithEmail:failure", task.exception)
