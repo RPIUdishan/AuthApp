@@ -39,4 +39,5 @@
     <string name="change_profile_picture">Change Profile Picture</string>
     <string name="username">Username</string>
     <string name="chatroom_name">ChatRoom</string>
+    <string name="chat_room_name">Chat Room Name</string>
 </resources>

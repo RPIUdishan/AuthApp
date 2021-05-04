@@ -31,15 +31,16 @@ class ChatRoomListActivity : AppCompatActivity() {
     }
 //
     private fun prepareData(){
-//        var user = UserModel("w@gmail.com", "Ish", "asdfasdf")
-//        var user2 = UserModel("w@gmail.com", "Ish", "asdfasdf")
-//        var message = MessageModel("1", "asdf", "sdfsdf")
-//        var message2 = MessageModel("1", "asdf", "sdfsdf")
         var userList = arrayListOf<UserModel>()
         var msgList = arrayListOf<MessageModel>()
         var chatRoom = ChatRoomModel("Test01", "Test01 Des", msgList, userList)
         chatRoomsList.add(chatRoom)
         chatRoom = ChatRoomModel("Test02", "Test02 Des", msgList, userList)
         chatRoomsList.add(chatRoom)
+    }
+
+    //create chat room method
+    private fun createChatRoom(){
+
     }
 }
