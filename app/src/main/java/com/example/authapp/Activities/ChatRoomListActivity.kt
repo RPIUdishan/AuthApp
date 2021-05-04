@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.authapp.Adapters.ChatRoomsAdapter
+import com.example.authapp.Fragments.CreateChatRoomFragment
 import com.example.authapp.Models.ChatRoomModel
 import com.example.authapp.Models.MessageModel
 import com.example.authapp.Models.UserModel
@@ -21,13 +22,19 @@ class ChatRoomListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_room_list)
-    Log.d("ChatRoomActivity", "Created")
+        Log.d("ChatRoomActivity", "Created")
         chatRoomAdapter = ChatRoomsAdapter(chatRoomsList)
         val layoutManager = LinearLayoutManager(applicationContext)
         recyclerViewUserChatRooms.layoutManager = layoutManager
         recyclerViewUserChatRooms.itemAnimator = DefaultItemAnimator()
         recyclerViewUserChatRooms.adapter = chatRoomAdapter
         prepareData()
+
+        fabCreateChatRoom.setOnClickListener {
+            val fragment = supportFragmentManager
+            val createChatRoomFragment = CreateChatRoomFragment()
+            createChatRoomFragment.show(fragment, "Create Chat Room")
+        }
     }
 //
     private fun prepareData(){
