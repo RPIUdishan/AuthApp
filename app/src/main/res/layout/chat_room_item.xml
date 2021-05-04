@@ -1,27 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:layout_marginStart="20dp"
-    android:layout_marginEnd="20dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
-    android:background="@color/purple_200"
-    >
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
+    app:cardMaxElevation="10dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
 
-    <TextView
-        android:id="@+id/textViewChatRoomName"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/chatroom_name"
-        android:paddingStart="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.333" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="wrap_content">
+
+        <!--ImageVIew to display our Course Image-->
+
+        <ImageView
+            android:id="@+id/imageViewChatRoom"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:contentDescription="@string/app_name"
+            android:padding="5dp"
+            android:src="@drawable/com_facebook_profile_picture_blank_portrait"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--Text View to display Course Name-->
+        <TextView
+            android:id="@+id/textViewChatRoomName"
+            android:layout_width="237dp"
+            android:layout_height="29dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="28dp"
+            android:layout_toEndOf="@id/imageViewChatRoom"
+            android:text="@string/chat_room"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.111"
+            app:layout_constraintStart_toEndOf="@+id/imageViewChatRoom"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewBadge"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/notify_circle"
+            android:paddingTop="4dp"
+            android:text="1"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.935"
+            app:layout_constraintStart_toEndOf="@+id/imageViewChatRoom"
+            app:layout_constraintTop_toBottomOf="@+id/textViewChatRoomName"
+            app:layout_constraintVertical_bias="0.157" />
+
+        <!--Text VIew to display COurse Rating-->
+        <!--Image used in present in drawable folder-->
+ />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
+
+
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<com.google.android.material.card.MaterialCardView-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="60dp"-->
+<!--    android:layout_marginStart="20dp"-->
+<!--    android:layout_marginEnd="20dp"-->
+<!--    android:layout_marginTop="10dp"-->
+<!--    android:layout_marginBottom="10dp"-->
+<!--    android:background="@color/purple_200"-->
+<!--    app:cardCornerRadius="200dp"-->
+<!--    >-->
+<!--    <TextView-->
+<!--        android:id="@+id/textViewChatRoomName"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:paddingStart="20dp"-->
+<!--        android:text="@string/chatroom_name"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        app:layout_constraintVertical_bias="0.333" />-->
+<!--</com.google.android.material.card.MaterialCardView>-->
