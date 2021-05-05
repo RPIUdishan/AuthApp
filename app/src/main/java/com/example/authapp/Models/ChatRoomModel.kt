@@ -6,9 +6,9 @@ class ChatRoomModel {
     var chatRoomName: String = ""
     var chatRoomDescription: String = ""
     var messageList: ArrayList<MessageModel> = ArrayList()
-    var userModelList: ArrayList<UserModel> = ArrayList()
+    var userModelList: ArrayList<String> = ArrayList()
 
-    constructor(chatRoomName: String, chatRoomDescription: String, messageList: ArrayList<MessageModel>, userModelList: ArrayList<UserModel>){
+    constructor(chatRoomName: String, chatRoomDescription: String, messageList: ArrayList<MessageModel>, userModelList: ArrayList<String>){
         this.chatRoomName = chatRoomName
         this.chatRoomDescription = chatRoomDescription
         this.messageList = messageList

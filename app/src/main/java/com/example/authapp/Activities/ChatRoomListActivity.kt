@@ -65,7 +65,7 @@ class ChatRoomListActivity : AppCompatActivity() {
     }
 //
     private fun prepareData(){
-        var userList = arrayListOf<UserModel>()
+        var userList = arrayListOf<String>()
         var msgList = arrayListOf<MessageModel>()
         var chatRoom = ChatRoomModel("Test01", "Test01 Des", msgList, userList)
         chatRoomsList.add(chatRoom)

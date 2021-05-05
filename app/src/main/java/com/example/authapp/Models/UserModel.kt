@@ -1,3 +1,5 @@
+@file:Suppress("PackageName")
+
 package com.example.authapp.Models
 
 class UserModel {
