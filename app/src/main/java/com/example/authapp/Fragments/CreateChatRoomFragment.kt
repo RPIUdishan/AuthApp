@@ -58,7 +58,7 @@ class CreateChatRoomFragment: DialogFragment() {
     private fun chatRoomInsertToFirebase(chatRoomName: String, chatRoomDescription: String, msgList: ArrayList<MessageModel>, userList: ArrayList<String>){
         var chatRoomModelObj: ChatRoomModel = ChatRoomModel(chatRoomName, chatRoomDescription, msgList, userList)
         firebase.collection("chatRooms")
-                .document(chatRoomName)
+                .document()
                 .set(chatRoomModelObj)
                 .addOnSuccessListener {
                     Log.d("ChatRoomCreated", "$chatRoomName is inserted")
@@ -69,7 +69,7 @@ class CreateChatRoomFragment: DialogFragment() {
                 }
                 .addOnFailureListener {
                     Log.d("ChatRoomCreated", "$it is raised")
-                    Toast.makeText(this.context, "$chatRoomName is Created", Toast.LENGTH_LONG)
+                    Toast.makeText(this.context, "Cannot Create ChatRoom", Toast.LENGTH_LONG)
                             .show()
                 }
     }
