@@ -47,8 +47,6 @@ class ChatRoomListActivity : AppCompatActivity() {
             val createChatRoomFragment = CreateChatRoomFragment()
             createChatRoomFragment.show(fragment, "Create Chat Room")
         }
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -63,7 +61,7 @@ class ChatRoomListActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-//
+
     private fun prepareData(){
         var userList = arrayListOf<String>()
         var msgList = arrayListOf<MessageModel>()
@@ -71,11 +69,6 @@ class ChatRoomListActivity : AppCompatActivity() {
         chatRoomsList.add(chatRoom)
         chatRoom = ChatRoomModel("Test02", "Test02 Des", msgList, userList)
         chatRoomsList.add(chatRoom)
-    }
-
-    //create chat room method
-    private fun createChatRoom(){
-
     }
 
     private fun signOutOperation(){

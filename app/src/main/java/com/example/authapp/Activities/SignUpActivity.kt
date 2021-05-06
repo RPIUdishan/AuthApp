@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.Toast
 import com.example.authapp.CommonUtils.CommonUtils
 import com.example.authapp.Constants.Constants
+import com.example.authapp.Models.ChatRoomModel
 import com.example.authapp.Models.UserModel
 import com.example.authapp.R
 import com.facebook.*
@@ -32,9 +33,11 @@ import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.google.firebase.auth.FacebookAuthProvider
 import kotlinx.android.synthetic.main.activity_sign_up.editTextPassword
+import kotlin.collections.ArrayList
 
 
 class SignUpActivity : AppCompatActivity() {
+
     private val utils: CommonUtils = CommonUtils()
     private val constant: Constants = Constants()
     private lateinit var auth:FirebaseAuth
@@ -43,6 +46,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var callbackManager: CallbackManager
     private lateinit var buttonFacebookLogin: LoginButton
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
@@ -108,6 +112,7 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
+    //on start method
     override fun onStart() {
         super.onStart()
         if (auth.currentUser != null){
@@ -188,8 +193,9 @@ class SignUpActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("createAccount", "createUserWithEmail:success")
+                    val userChatRoomModelList: ArrayList<String> = ArrayList()
                     val currentUser = auth.currentUser
-                    userDataSave(currentUser.email, editTextUsername.text.toString(), selectedPhotoUri.toString())
+                    userDataSave(currentUser.email, editTextUsername.text.toString(), selectedPhotoUri.toString(), userChatRoomModelList)
                     Toast.makeText(baseContext, "Authenticated", Toast.LENGTH_SHORT).show()
                 }
                 else {
@@ -202,10 +208,10 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     //firebase authentication
-    private fun userDataSave(email: String, username: String, photoUri: String){
+    private fun userDataSave(email: String, username: String, photoUri: String, userChatRoomModelList: ArrayList<String>){
         Log.d("userDataSave", "Okkkkkkkkkkkkkkkkkkkkk")
         Log.d("URI", photoUri)
-        val userModel: UserModel = UserModel(email, username, photoUri)
+        val userModel: UserModel = UserModel(email, username, photoUri, userChatRoomModelList)
         firestore.collection("users")
             .document(auth.currentUser.uid)
             .set(userModel)
@@ -283,8 +289,9 @@ class SignUpActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("firebaseAuthWithGoogle", "signInWithCredential:success")
+                    val userChatRoomModelList: ArrayList<String> = ArrayList()
                     val user = auth.currentUser
-                    userDataSave(user.email.toString(), user.displayName, user.photoUrl.toString() )
+                    userDataSave(user.email.toString(), user.displayName, user.photoUrl.toString(), userChatRoomModelList)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("firebaseAuthWithGoogle", "signInWithCredential:failure", task.exception)
@@ -301,8 +308,9 @@ class SignUpActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("handleFacebook", "signInWithCredential:success")
+                        val userChatRoomModelList: ArrayList<String> = ArrayList()
                         val user = auth.currentUser
-                        userDataSave(user.email.toString(), user.displayName, user.photoUrl.toString() )
+                        userDataSave(user.email.toString(), user.displayName, user.photoUrl.toString(), userChatRoomModelList )
 
                     } else {
                         // If sign in fails, display a message to the user.

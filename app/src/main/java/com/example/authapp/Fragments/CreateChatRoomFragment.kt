@@ -15,11 +15,15 @@ import com.example.authapp.Models.ChatRoomModel
 import com.example.authapp.Models.MessageModel
 import com.example.authapp.Models.UserModel
 import com.example.authapp.R
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldPath
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_dialog_create_chat_room.view.*
 
-class CreateChatRoomFragment: DialogFragment() {
+class CreateChatRoomFragment : DialogFragment() {
     lateinit var firebase: FirebaseFirestore
     lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,9 +33,9 @@ class CreateChatRoomFragment: DialogFragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         var viewRoot: View = inflater.inflate(R.layout.fragment_dialog_create_chat_room, container, false)
 
@@ -40,28 +44,54 @@ class CreateChatRoomFragment: DialogFragment() {
 
         cancelButton.setOnClickListener {
             onDestroyView()
+            dismiss()
+//            getChatRoomStatusNo()
+//            Log.d("test no", x)
         }
 
         saveButton.setOnClickListener {
             Log.d("save button", " clicked")
 
-            var chatRoomName: String = viewRoot.editTextTextChatRoomName.text.toString()
-            var chatRoomDescription: String = viewRoot.editTextTextChatRoomDescription.text.toString()
-            var msgList: ArrayList<MessageModel> = arrayListOf()
+            var msgList: ArrayList<MessageModel> = ArrayList()
             var userList: ArrayList<String> = ArrayList()
-            userList.add(auth.currentUser.uid)
-            chatRoomInsertToFirebase(chatRoomName, chatRoomDescription, msgList, userList)
+            userList.add(auth.currentUser?.uid.toString())
+            chatRoomInsertToFirebase(viewRoot.editTextTextChatRoomName.text.toString(),
+                    viewRoot.editTextTextChatRoomDescription.text.toString(),
+                    msgList,
+                    userList
+            )
+            Log.d("save button", "$viewRoot.editTextTextChatRoomName.text.toString() is created")
+            Toast.makeText(this.context,
+                    "${viewRoot.editTextTextChatRoomName.text} is created.",
+                    Toast.LENGTH_LONG
+            ).show()
         }
-    return viewRoot
+        return viewRoot
     }
 
-    private fun chatRoomInsertToFirebase(chatRoomName: String, chatRoomDescription: String, msgList: ArrayList<MessageModel>, userList: ArrayList<String>){
+    private fun chatRoomInsertToFirebase(chatRoomName: String, chatRoomDescription: String, msgList: ArrayList<MessageModel>, userList: ArrayList<String>) {
+        Log.d("ct", "start")
         var chatRoomModelObj: ChatRoomModel = ChatRoomModel(chatRoomName, chatRoomDescription, msgList, userList)
         firebase.collection("chatRooms")
-                .document()
+                .document("${auth.currentUser.uid}_${chatRoomName}")
                 .set(chatRoomModelObj)
                 .addOnSuccessListener {
                     Log.d("ChatRoomCreated", "$chatRoomName is inserted")
+                    var id = 3
+                    Log.d("idd", id.toString())
+                    firebase.collection("users")
+                            .document(auth.currentUser.uid)
+                            .update(
+//                                    "chatRoomStatusNo", "newStatusNo",
+                                    "userChatRoomModelList", FieldValue.arrayUnion("${auth.currentUser.uid}_${chatRoomName}") //Point
+                            )
+                            .addOnSuccessListener {
+                                Log.d("chatRoomAdd", "success")
+                            }
+                            .addOnFailureListener {
+                                Log.d("chatRoomAdd", "fail")
+                                Log.d("chatRoomAdd", "$it")
+                            }
                     Toast.makeText(this.context, "$chatRoomName is Created", Toast.LENGTH_LONG)
                             .show()
                     val intent = Intent(this.context, ProfileActivity::class.java)
@@ -73,4 +103,7 @@ class CreateChatRoomFragment: DialogFragment() {
                             .show()
                 }
     }
+
 }
+
+
