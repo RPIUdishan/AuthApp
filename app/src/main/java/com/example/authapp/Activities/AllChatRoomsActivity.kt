@@ -47,6 +47,7 @@ class AllChatRoomsActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
     private fun getAllChatRooms(){
         val ref = FirebaseFirestore.getInstance().collection("chatRooms")
         ref.addSnapshotListener { value, error ->
