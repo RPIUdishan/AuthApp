@@ -24,8 +24,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_dialog_create_chat_room.view.*
 
 class CreateChatRoomFragment : DialogFragment() {
+
     lateinit var firebase: FirebaseFirestore
     lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firebase = FirebaseFirestore.getInstance()
@@ -69,9 +71,13 @@ class CreateChatRoomFragment : DialogFragment() {
         return viewRoot
     }
 
-    private fun chatRoomInsertToFirebase(chatRoomName: String, chatRoomDescription: String, msgList: ArrayList<MessageModel>, userList: ArrayList<String>) {
+    private fun chatRoomInsertToFirebase(chatRoomName: String,
+                                         chatRoomDescription: String,
+                                         msgList: ArrayList<MessageModel>,
+                                         userList: ArrayList<String>) {
         Log.d("ct", "start")
         var chatRoomModelObj: ChatRoomModel = ChatRoomModel(chatRoomName, chatRoomDescription, msgList, userList)
+
         firebase.collection("chatRooms")
                 .document("${auth.currentUser.uid}_${chatRoomName}")
                 .set(chatRoomModelObj)

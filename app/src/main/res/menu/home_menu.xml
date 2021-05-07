@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/join_with_chat_room"
+        android:title="@string/new_chat"
+        app:showAsAction="ifRoom"
+        />
+    <item
         android:id="@+id/menu_profile"
         android:title="@string/menu_item_profile"
         />

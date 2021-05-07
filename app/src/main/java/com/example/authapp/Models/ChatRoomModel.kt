@@ -9,6 +9,7 @@ class ChatRoomModel {
     var messageList: ArrayList<MessageModel> = ArrayList()
     var userModelList: ArrayList<String> = ArrayList()
 
+    constructor() : this("", "", arrayListOf(), arrayListOf())
     //overloaded constructor
     constructor(chatRoomName: String,
                 chatRoomDescription: String,

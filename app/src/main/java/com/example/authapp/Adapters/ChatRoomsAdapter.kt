@@ -12,7 +12,7 @@ import com.example.authapp.Models.ChatRoomModel
 import com.example.authapp.R
 import kotlinx.android.synthetic.main.chat_room_item.view.*
 
-internal class ChatRoomsAdapter(private var chatRoomsList: List<ChatRoomModel>):
+internal class ChatRoomsAdapter(private var chatRoomsList: ArrayList<ChatRoomModel>):
     RecyclerView.Adapter<ChatRoomsAdapter.ChatRoomViewHolder>()
 {
     inner class ChatRoomViewHolder(view: View) : RecyclerView.ViewHolder(view){

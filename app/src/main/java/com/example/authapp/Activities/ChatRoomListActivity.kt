@@ -20,13 +20,17 @@ import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.longrunning.ListOperationsRequest
 import kotlinx.android.synthetic.main.activity_chat_room_list.*
 
 private val chatRoomsList = ArrayList<ChatRoomModel>()
 private lateinit var chatRoomAdapter: ChatRoomsAdapter
 private lateinit var auth: FirebaseAuth
+private lateinit var firebase: FirebaseFirestore
+
 class ChatRoomListActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_room_list)
@@ -34,6 +38,8 @@ class ChatRoomListActivity : AppCompatActivity() {
         supportActionBar?.title = "Chat Rooms"
 
         auth = FirebaseAuth.getInstance()
+        firebase = FirebaseFirestore.getInstance()
+
         Log.d("ChatRoomActivity", "Created")
         chatRoomAdapter = ChatRoomsAdapter(chatRoomsList)
         val layoutManager = LinearLayoutManager(applicationContext)
@@ -56,6 +62,7 @@ class ChatRoomListActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
+            R.id.join_with_chat_room -> startActivity(Intent(this, AllChatRoomsActivity::class.java))
             R.id.menu_profile -> startActivity(Intent(this, SignUpActivity::class.java))
             R.id.menu_logout -> signOutOperation()
         }
@@ -70,6 +77,15 @@ class ChatRoomListActivity : AppCompatActivity() {
         chatRoom = ChatRoomModel("Test02", "Test02 Des", msgList, userList)
         chatRoomsList.add(chatRoom)
     }
+
+//    private fun prepareData2(){
+//        firebase.collection("users")
+//                .document(auth.currentUser.uid)
+//                .get()
+//                .addOnSuccessListener {
+//                    it["userChatRoomModelList"] as
+//                }
+//    }
 
     private fun signOutOperation(){
         GoogleSignIn.getClient(
