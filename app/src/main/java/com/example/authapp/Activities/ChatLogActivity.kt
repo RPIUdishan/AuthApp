@@ -28,6 +28,8 @@ import kotlinx.android.synthetic.main.activity_chat_log.*
 import kotlinx.android.synthetic.main.activity_chat_room_list.*
 import kotlinx.android.synthetic.main.receive_message.view.*
 import kotlinx.android.synthetic.main.send_message.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ChatLogActivity : AppCompatActivity() {
     private val constant: Constants = Constants()
@@ -117,6 +119,9 @@ class ChatLogActivity : AppCompatActivity() {
     inner class SendItem(var message: MessageModel): Item<GroupieViewHolder>() {
 
         override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+            val sdf = SimpleDateFormat("DD/MM/yyyy ")
+            val currentDate = sdf.format(Date())
+            viewHolder.itemView.text_gchat_date_me.text = currentDate.toString()
             viewHolder.itemView.text_gchat_message_me.text = message.message
         }
 

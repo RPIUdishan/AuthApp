@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.authapp.Adapters.ChatRoomsAdapter
+import com.example.authapp.Constants.Constants
 import com.example.authapp.Models.ChatRoomModel
 import com.example.authapp.R
 import com.facebook.login.LoginManager
@@ -30,6 +31,7 @@ import kotlinx.android.synthetic.main.chat_room_item.view.*
 
 private lateinit var auth: FirebaseAuth
 private lateinit var firebase: FirebaseFirestore
+private val constant: Constants = Constants()
 lateinit var adapter: GroupAdapter<GroupieViewHolder>
 
 class ChatRoomListActivity : AppCompatActivity() {
@@ -48,8 +50,24 @@ class ChatRoomListActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(applicationContext)
         recyclerViewUserChatRooms.layoutManager = layoutManager
         recyclerViewUserChatRooms.itemAnimator = DefaultItemAnimator()
+
         getUserChatRooms()
 
+        adapter.setOnItemClickListener { item, view ->
+            val chatRoom = item as ChatRoomItem
+
+            var intent = Intent(applicationContext, ChatLogActivity::class.java)
+            intent.putExtra(
+                constant.CHAT_ROOM_KEY,
+                chatRoom.chatRoomId
+            )
+            intent.putExtra(
+                constant.CHAT_ROOM_NAME,
+                chatRoom.chatRoomName
+            )
+
+            startActivity(intent)
+        }
 
         fabCreateChatRoom.setOnClickListener {
             var intent = Intent(applicationContext, CreateChatRoomActivity::class.java)
@@ -103,10 +121,11 @@ class ChatRoomListActivity : AppCompatActivity() {
                     firebase.collection("chatRooms").document(i)
                         .get()
                         .addOnSuccessListener {
+                            var chatRoomId = i.toString()
                             var chatRoomName = it["chatRoomName"].toString()
                             var chatRoomPic = it["chatRoomPic"].toString()
 
-                            adapter.add(ChatRoomItem(chatRoomName, chatRoomPic))
+                            adapter.add(ChatRoomItem(chatRoomId,chatRoomName, chatRoomPic))
                         }
                 }
                 recyclerViewUserChatRooms.adapter = adapter
@@ -118,7 +137,7 @@ class ChatRoomListActivity : AppCompatActivity() {
             }
     }
 
-    inner class ChatRoomItem(private var chatRoomName: String, private var chatRoomPic: String) :
+    inner class ChatRoomItem(var chatRoomId: String,  var chatRoomName: String,  var chatRoomPic: String) :
         Item<GroupieViewHolder>() {
 
         override fun bind(viewHolder: GroupieViewHolder, position: Int) {
