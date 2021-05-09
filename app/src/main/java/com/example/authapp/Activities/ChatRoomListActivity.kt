@@ -21,6 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import kotlinx.android.synthetic.main.activity_all_chat_rooms.*
@@ -28,9 +29,9 @@ import kotlinx.android.synthetic.main.activity_chat_room_list.*
 import kotlinx.android.synthetic.main.chat_room_item.view.*
 
 private val chatRoomsList = ArrayList<ChatRoomModel>()
-private lateinit var chatRoomAdapter: ChatRoomsAdapter
 private lateinit var auth: FirebaseAuth
 private lateinit var firebase: FirebaseFirestore
+lateinit var adapter: GroupAdapter<GroupieViewHolder>
 
 class ChatRoomListActivity : AppCompatActivity() {
 
@@ -40,17 +41,17 @@ class ChatRoomListActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Chat Rooms"
 
+        adapter = GroupAdapter()
+
         auth = FirebaseAuth.getInstance()
         firebase = FirebaseFirestore.getInstance()
 
         Log.d("ChatRoomActivity", "Created")
-        chatRoomAdapter = ChatRoomsAdapter(chatRoomsList)
         val layoutManager = LinearLayoutManager(applicationContext)
         recyclerViewUserChatRooms.layoutManager = layoutManager
         recyclerViewUserChatRooms.itemAnimator = DefaultItemAnimator()
-        recyclerViewUserChatRooms.adapter = chatRoomAdapter
         getUserChatRooms()
-//        userChatRooms()
+
 
         fabCreateChatRoom.setOnClickListener {
             var intent = Intent(applicationContext, CreateChatRoomActivity::class.java)

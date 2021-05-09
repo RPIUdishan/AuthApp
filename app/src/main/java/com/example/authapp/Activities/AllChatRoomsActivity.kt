@@ -22,12 +22,13 @@ import kotlinx.android.synthetic.main.activity_all_chat_rooms.*
 import kotlinx.android.synthetic.main.chat_room_item.view.*
 
 
-val adapter = GroupAdapter<GroupieViewHolder>()
 class AllChatRoomsActivity : AppCompatActivity() {
+    lateinit var adapter: GroupAdapter<GroupieViewHolder>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_chat_rooms)
 
+        adapter = GroupAdapter()
         supportActionBar?.title = "All Chat Rooms"
 
         getAllChatRooms()
