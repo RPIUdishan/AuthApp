@@ -8,23 +8,21 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import com.example.authapp.Models.ChatRoomModel
+import com.bumptech.glide.Glide
 import com.example.authapp.R
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import kotlinx.android.synthetic.main.activity_all_chat_rooms.*
 import kotlinx.android.synthetic.main.chat_room_item.view.*
 
-//val chatRoomItem: ChatRoomItem = ChatRoomItem(chatRoom: ChatRoomModel)
-val adapter = GroupAdapter<GroupieViewHolder>()
 
+val adapter = GroupAdapter<GroupieViewHolder>()
 class AllChatRoomsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,15 +51,16 @@ class AllChatRoomsActivity : AppCompatActivity() {
         ref.addSnapshotListener { value, error ->
 
             error?.let {
-                Toast.makeText(applicationContext, it.message, Toast.LENGTH_LONG)
+                Toast.makeText(applicationContext, it.toString(), Toast.LENGTH_LONG)
                         .show()
                 return@addSnapshotListener
             }
 
             value?.let {
                 for (document in it){
-                    val chatRoom = document.toObject<ChatRoomModel>()
-                    adapter.add(ChatRoomItem(chatRoom))
+                    var chatRoomName = document["chatRoomName"].toString()
+                    var chatRoomPic = document["chatRoomPic"].toString()
+                    adapter.add(ChatRoomItem(chatRoomName, chatRoomPic))
                 }
 
                 recycleViewAllChatRooms.adapter = adapter
@@ -83,10 +82,13 @@ class AllChatRoomsActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    inner class ChatRoomItem(private val chatRoom: ChatRoomModel): Item<GroupieViewHolder>() {
+    inner class ChatRoomItem(private var chatRoomName: String, private var chatRoomPic: String): Item<GroupieViewHolder>() {
 
         override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-            viewHolder.itemView.textViewChatRoomName.text = chatRoom.chatRoomName
+            viewHolder.itemView.textViewChatRoomName.text = chatRoomName
+            if (chatRoomPic.isNotEmpty()){
+                Glide.with(applicationContext).load(chatRoomPic).into(viewHolder.itemView.imageViewChatRoom)
+            }
         }
 
         override fun getLayout(): Int {

@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/join_with_chat_room"
-        android:title="@string/new_chat"
+        android:title="@string/join"
         app:showAsAction="ifRoom"
         />
     <item

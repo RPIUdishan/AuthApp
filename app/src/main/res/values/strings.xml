@@ -40,5 +40,6 @@
     <string name="username">Username</string>
     <string name="chatroom_name">ChatRoom</string>
     <string name="new_chat">New Chat</string>
+    <string name="join">Join</string>
 
 </resources>

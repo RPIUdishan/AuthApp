@@ -54,7 +54,7 @@ class CreateChatRoomFragment : DialogFragment() {
         saveButton.setOnClickListener {
             Log.d("save button", " clicked")
 
-            var msgList: ArrayList<MessageModel> = ArrayList()
+            var msgList: ArrayList<String> = ArrayList()
             var userList: ArrayList<String> = ArrayList()
             userList.add(auth.currentUser?.uid.toString())
             chatRoomInsertToFirebase(viewRoot.editTextTextChatRoomName.text.toString(),
@@ -73,7 +73,7 @@ class CreateChatRoomFragment : DialogFragment() {
 
     private fun chatRoomInsertToFirebase(chatRoomName: String,
                                          chatRoomDescription: String,
-                                         msgList: ArrayList<MessageModel>,
+                                         msgList: ArrayList<String>,
                                          userList: ArrayList<String>) {
         Log.d("ct", "start")
         var chatRoomModelObj: ChatRoomModel = ChatRoomModel(chatRoomName, chatRoomDescription, msgList, userList)

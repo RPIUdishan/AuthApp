@@ -17,21 +17,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!--ImageVIew to display our Course Image-->
-
-        <ImageView
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/imageViewChatRoom"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_margin="10dp"
-            android:contentDescription="@string/app_name"
-            android:padding="5dp"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
             android:src="@drawable/com_facebook_profile_picture_blank_portrait"
+            app:civ_border_color="@color/main_color"
+            app:civ_border_width="1dp"
+            app:civ_shadow="true"
+            app:civ_shadow_color="@color/main_color"
+            app:civ_shadow_radius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!--Text View to display Course Name-->
         <TextView
             android:id="@+id/textViewChatRoomName"
             android:layout_width="237dp"
