@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import com.example.authapp.Constants.Constants
 import com.example.authapp.Models.ChatRoomModel
@@ -20,7 +19,6 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_create_chat_room.*
-import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.*
 
 class CreateChatRoomActivity : AppCompatActivity() {

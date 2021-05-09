@@ -19,6 +19,8 @@ import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
@@ -30,12 +32,19 @@ import kotlinx.android.synthetic.main.send_message.view.*
 class ChatLogActivity : AppCompatActivity() {
     private val constant: Constants = Constants()
     private lateinit var adapter: GroupAdapter<GroupieViewHolder>
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var chatRoomID: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_log)
 
         supportActionBar?.title = intent.getStringExtra(constant.CHAT_ROOM_NAME)
-        var chatRoomID: String? = intent.getStringExtra(constant.CHAT_ROOM_KEY)
+        chatRoomID  = intent.getStringExtra(constant.CHAT_ROOM_KEY)!!
+
+        auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
 
         val layoutManager = LinearLayoutManager(applicationContext)
         recycler_gchat.layoutManager = layoutManager
@@ -43,6 +52,9 @@ class ChatLogActivity : AppCompatActivity() {
 
         adapter = GroupAdapter()
 
+        button_gchat_send.setOnClickListener {
+            performMessaging()
+        }
 //        addData()
     }
 
@@ -69,6 +81,25 @@ class ChatLogActivity : AppCompatActivity() {
 //        recycler_gchat.adapter = adapter
 //    }
 
+    private fun performMessaging(){
+        var message = edit_gchat_message.text.toString()
+        var messageObj = MessageModel(message, auth?.currentUser.uid)
+
+        firestore.collection("chatRooms")
+            .document(chatRoomID.toString())
+            .update(
+                "messageList", FieldValue.arrayUnion(messageObj)
+            )
+            .addOnSuccessListener {
+                Log.d("Message", "complete")
+                adapter.add(SendItem(messageObj))
+                recycler_gchat.adapter = adapter
+                edit_gchat_message.text.clear()
+            }
+            .addOnFailureListener {
+                Log.d("Message F", "Failed")
+            }
+    }
     private fun signOutOperation(){
         GoogleSignIn.getClient(
             applicationContext,

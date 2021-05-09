@@ -218,7 +218,7 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Successfully registered", Toast.LENGTH_SHORT).show()
                 finish()
                 progressBarSignUp.visibility = View.GONE
-                startActivity(Intent(applicationContext, ProfileActivity::class.java))
+                startActivity(Intent(applicationContext, ChatRoomListActivity::class.java))
             }
             .addOnFailureListener{
                 Toast.makeText(applicationContext, "Failed to register", Toast.LENGTH_SHORT).show()
