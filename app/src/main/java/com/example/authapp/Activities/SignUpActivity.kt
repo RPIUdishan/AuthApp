@@ -209,7 +209,6 @@ class SignUpActivity : AppCompatActivity() {
 
     //firebase authentication
     private fun userDataSave(email: String, username: String, photoUri: String, userChatRoomModelList: ArrayList<String>){
-        Log.d("userDataSave", "Okkkkkkkkkkkkkkkkkkkkk")
         Log.d("URI", photoUri)
         val userModel: UserModel = UserModel(email, username, photoUri, userChatRoomModelList)
         firestore.collection("users")
@@ -217,14 +216,12 @@ class SignUpActivity : AppCompatActivity() {
             .set(userModel)
             .addOnSuccessListener {
                 Toast.makeText(applicationContext, "Successfully registered", Toast.LENGTH_SHORT).show()
-                Log.d("userDataSave", "user collection success")
                 finish()
                 progressBarSignUp.visibility = View.GONE
                 startActivity(Intent(applicationContext, ProfileActivity::class.java))
             }
             .addOnFailureListener{
                 Toast.makeText(applicationContext, "Failed to register", Toast.LENGTH_SHORT).show()
-                Log.d("userDataSave", it.toString())
                 finish()
                 progressBarSignUp.visibility = View.GONE
                 startActivity(Intent(applicationContext, SignUpActivity::class.java))
@@ -247,7 +244,7 @@ class SignUpActivity : AppCompatActivity() {
         Log.d("Google Sign in", "${requestCode == constant.RC_SIGN_IN}")
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode==constant.RC_IMAGE_URI && resultCode == Activity.RESULT_OK && data != null){
-            var tempUri = data.data!!
+                var tempUri = data.data!!
 
                 val filename = UUID.randomUUID().toString()
 

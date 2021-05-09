@@ -11,24 +11,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.authapp.Adapters.ChatRoomsAdapter
-import com.example.authapp.Fragments.CreateChatRoomFragment
 import com.example.authapp.Models.ChatRoomModel
-import com.example.authapp.Models.MessageModel
 import com.example.authapp.R
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import kotlinx.android.synthetic.main.activity_chat_room_list.*
 import kotlinx.android.synthetic.main.chat_room_item.view.*
-
 
 private val chatRoomsList = ArrayList<ChatRoomModel>()
 private lateinit var chatRoomAdapter: ChatRoomsAdapter
@@ -56,10 +49,8 @@ class ChatRoomListActivity : AppCompatActivity() {
 //        userChatRooms()
 
         fabCreateChatRoom.setOnClickListener {
-            val fragment = supportFragmentManager
-            val createChatRoomFragment = CreateChatRoomFragment()
-            createChatRoomFragment.show(fragment, "Create Chat Room")
-
+            var intent = Intent(applicationContext, CreateChatRoomActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -76,9 +67,6 @@ class ChatRoomListActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
-
-
 
 //    private fun userChatRooms(){
 //        firebase.collection("users")
@@ -125,14 +113,14 @@ class ChatRoomListActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-//    inner class ChatRoomItem(private val chatRoom: ChatRoomModel): Item<GroupieViewHolder>() {
-//
-//        override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-//            viewHolder.itemView.textViewChatRoomName.text = chatRoom.chatRoomName
-//        }
-//
-//        override fun getLayout(): Int {
-//            return R.layout.chat_room_item
-//        }
-//    }
+    inner class ChatRoomItem(private val chatRoom: ChatRoomModel): Item<GroupieViewHolder>() {
+
+        override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+            viewHolder.itemView.textViewChatRoomName.text = chatRoom.chatRoomName
+        }
+
+        override fun getLayout(): Int {
+            return R.layout.chat_room_item
+        }
+    }
 }
