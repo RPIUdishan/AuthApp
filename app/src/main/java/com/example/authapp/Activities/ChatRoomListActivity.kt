@@ -7,9 +7,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.authapp.Adapters.ChatRoomsAdapter
 import com.example.authapp.Models.ChatRoomModel
 import com.example.authapp.R
@@ -17,9 +19,11 @@ import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
+import kotlinx.android.synthetic.main.activity_all_chat_rooms.*
 import kotlinx.android.synthetic.main.activity_chat_room_list.*
 import kotlinx.android.synthetic.main.chat_room_item.view.*
 
@@ -45,7 +49,7 @@ class ChatRoomListActivity : AppCompatActivity() {
         recyclerViewUserChatRooms.layoutManager = layoutManager
         recyclerViewUserChatRooms.itemAnimator = DefaultItemAnimator()
         recyclerViewUserChatRooms.adapter = chatRoomAdapter
-
+        getUserChatRooms()
 //        userChatRooms()
 
         fabCreateChatRoom.setOnClickListener {
@@ -55,51 +59,25 @@ class ChatRoomListActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.home_menu,menu)
+        menuInflater.inflate(R.menu.home_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.join_with_chat_room -> startActivity(Intent(this, AllChatRoomsActivity::class.java))
+        when (item.itemId) {
+            R.id.join_with_chat_room -> startActivity(
+                Intent(
+                    this,
+                    AllChatRoomsActivity::class.java
+                )
+            )
             R.id.menu_profile -> startActivity(Intent(this, SignUpActivity::class.java))
             R.id.menu_logout -> signOutOperation()
         }
         return super.onOptionsItemSelected(item)
     }
 
-//    private fun userChatRooms(){
-//        firebase.collection("users")
-//            .document(auth?.currentUser.uid)
-//            .get()
-//            .addOnSuccessListener { doc1 ->
-//                var x = arrayOf(doc1["userChatRoomModelList"])
-//                var tempArray: ArrayList<String> = ArrayList()
-//                x.forEach{ doc2 ->
-//                    Log.d("elem", doc2.toString())
-//                    tempArray.add(x.toString())
-//                }
-//
-//
-//                tempArray.forEach { doc3 ->
-//                    Log.d("myArray111", doc3)
-//                    firebase.collection("chatRooms")
-//                        .whereArrayContains("userModelList", doc3)
-//                        .get()
-//                        .addOnSuccessListener { doc4 ->
-//                            for(doc in doc4){
-//                                Log.d("ItemElem", doc4.documents.toString())
-//                                val chatRoom = doc.toObject<ChatRoomModel>()
-//                                adapter.add(ChatRoomItem(chatRoom))
-//                            }
-//
-//                            recyclerViewUserChatRooms.adapter = adapter
-//                        }
-//                }
-//
-//            }
-//    }
-    private fun signOutOperation(){
+    private fun signOutOperation() {
         GoogleSignIn.getClient(
             applicationContext,
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
@@ -113,10 +91,42 @@ class ChatRoomListActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    inner class ChatRoomItem(private val chatRoom: ChatRoomModel): Item<GroupieViewHolder>() {
+    private fun getUserChatRooms() {
+
+        val refUser: CollectionReference = FirebaseFirestore.getInstance().collection("users")
+
+        refUser.document(auth.currentUser.uid)
+            .get()
+            .addOnSuccessListener {
+                var chatRoomList = it["userChatRoomModelList"] as ArrayList<String>
+                for (i in chatRoomList) {
+                    Log.d("item", i)
+                    firebase.collection("chatRooms").document(i)
+                        .get()
+                        .addOnSuccessListener {
+                            var chatRoomName = it["chatRoomName"].toString()
+                            var chatRoomPic = it["chatRoomPic"].toString()
+
+                            adapter.add(ChatRoomItem(chatRoomName, chatRoomPic))
+                        }
+                }
+                recyclerViewUserChatRooms.adapter = adapter
+            }
+            .addOnFailureListener {
+                Toast.makeText(applicationContext, "Cannot get List", Toast.LENGTH_LONG)
+                    .show()
+            }
+    }
+
+    inner class ChatRoomItem(private var chatRoomName: String, private var chatRoomPic: String) :
+        Item<GroupieViewHolder>() {
 
         override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-            viewHolder.itemView.textViewChatRoomName.text = chatRoom.chatRoomName
+            viewHolder.itemView.textViewChatRoomName.text = chatRoomName
+            if (chatRoomPic.isNotEmpty()) {
+                Glide.with(applicationContext).load(chatRoomPic)
+                    .into(viewHolder.itemView.imageViewChatRoom)
+            }
         }
 
         override fun getLayout(): Int {
