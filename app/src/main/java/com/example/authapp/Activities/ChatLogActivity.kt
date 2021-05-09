@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import com.example.authapp.Constants.Constants
 import com.example.authapp.R
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -15,9 +16,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 
 class ChatLogActivity : AppCompatActivity() {
+    private val constant: Constants = Constants()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_log)
+
+        supportActionBar?.title = intent.getStringExtra(constant.CHAT_ROOM_NAME)
+        var chatRoomID: String? = intent.getStringExtra(constant.CHAT_ROOM_KEY)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -28,7 +28,6 @@ import kotlinx.android.synthetic.main.activity_all_chat_rooms.*
 import kotlinx.android.synthetic.main.activity_chat_room_list.*
 import kotlinx.android.synthetic.main.chat_room_item.view.*
 
-private val chatRoomsList = ArrayList<ChatRoomModel>()
 private lateinit var auth: FirebaseAuth
 private lateinit var firebase: FirebaseFirestore
 lateinit var adapter: GroupAdapter<GroupieViewHolder>
@@ -46,7 +45,6 @@ class ChatRoomListActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         firebase = FirebaseFirestore.getInstance()
 
-        Log.d("ChatRoomActivity", "Created")
         val layoutManager = LinearLayoutManager(applicationContext)
         recyclerViewUserChatRooms.layoutManager = layoutManager
         recyclerViewUserChatRooms.itemAnimator = DefaultItemAnimator()
@@ -112,6 +110,7 @@ class ChatRoomListActivity : AppCompatActivity() {
                         }
                 }
                 recyclerViewUserChatRooms.adapter = adapter
+
             }
             .addOnFailureListener {
                 Toast.makeText(applicationContext, "Cannot get List", Toast.LENGTH_LONG)
@@ -129,7 +128,6 @@ class ChatRoomListActivity : AppCompatActivity() {
                     .into(viewHolder.itemView.imageViewChatRoom)
             }
         }
-
         override fun getLayout(): Int {
             return R.layout.chat_room_item
         }
