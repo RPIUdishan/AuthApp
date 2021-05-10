@@ -5,13 +5,11 @@ package com.example.authapp.Activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Message
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.authapp.Constants.Constants
 import com.example.authapp.Models.MessageModel
 import com.example.authapp.R
@@ -25,11 +23,12 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import kotlinx.android.synthetic.main.activity_chat_log.*
-import kotlinx.android.synthetic.main.activity_chat_room_list.*
 import kotlinx.android.synthetic.main.receive_message.view.*
 import kotlinx.android.synthetic.main.send_message.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class ChatLogActivity : AppCompatActivity() {
     private val constant: Constants = Constants()
@@ -57,7 +56,8 @@ class ChatLogActivity : AppCompatActivity() {
         button_gchat_send.setOnClickListener {
             performMessaging()
         }
-//        addData()
+
+        loadMessages()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -75,13 +75,6 @@ class ChatLogActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
 
     }
-
-//    private fun addData(){
-//        adapter.add(SendItem(MessageModel("111", "Madhu", "Ishanka")))
-//        adapter.add(ReceiveItem(MessageModel("112", "Ishanka", "Madhu")))
-//
-//        recycler_gchat.adapter = adapter
-//    }
 
     private fun performMessaging(){
         var message = edit_gchat_message.text.toString()
@@ -116,10 +109,39 @@ class ChatLogActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    private fun loadMessages(){
+        firestore.collection("chatRooms").document(chatRoomID)
+            .get()
+            .addOnSuccessListener {
+                var list = it["messageList"] as ArrayList<HashMap<*, MessageModel>>
+                Log.d("i val", it["messageList"].toString())
+                for(i in list) {
+                    Log.d("test", "as")
+                    Log.d("in", i.get("sender").toString())
+
+                    if((i.get("sender").toString()).equals(auth.currentUser?.uid.toString())){
+                        val messageObj = MessageModel( i.get("message").toString(), i.get("sender").toString(),
+                            i.get("time").toString()
+                        )
+                        adapter.add(SendItem(messageObj))
+                    }
+                    else{
+                        val messageObj = MessageModel( i.get("message").toString(), i.get("sender").toString(),
+                            i.get("time").toString()
+                        )
+                        adapter.add(ReceiveItem(messageObj))
+                    }
+
+                }
+                recycler_gchat.adapter = adapter
+            }
+
+        }
+
     inner class SendItem(var message: MessageModel): Item<GroupieViewHolder>() {
 
         override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-            val sdf = SimpleDateFormat("DD/MM/yyyy ")
+            val sdf = SimpleDateFormat("dd/MM/yyyy")
             val currentDate = sdf.format(Date())
             viewHolder.itemView.text_gchat_date_me.text = currentDate.toString()
             viewHolder.itemView.text_gchat_message_me.text = message.message
@@ -136,7 +158,15 @@ class ChatLogActivity : AppCompatActivity() {
         }
 
         override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-            viewHolder.itemView.text_gchat_message_other.text = message.message
+            firestore.collection("users").document(message.sender)
+            .get()
+            .addOnSuccessListener {
+                var username = it["username"].toString()
+                viewHolder.itemView.text_gchat_user_other.text = username
+                viewHolder.itemView.text_gchat_message_other.text = message.message
+            }
+
+
         }
 
     }

@@ -116,7 +116,7 @@ class SignUpActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         if (auth.currentUser != null){
-            val intent = Intent(applicationContext, ProfileActivity::class.java)
+            val intent = Intent(applicationContext, ChatRoomListActivity::class.java)
             finish()
             startActivity(intent)
         }
