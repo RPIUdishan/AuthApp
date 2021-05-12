@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="600dp"
+    android:layout_margin="20dp"
+    android:background="@color/create_chat_room_fragment_color"
+    tools:context=".Activities.CreateChatRoomActivity"
+    >
+
+    <TextView
+        android:id="@+id/textViewTopicCreateChatRoom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:text="Create Your Chat Room"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/imgViewChatRoomUploader"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:src="@drawable/com_facebook_profile_picture_blank_portrait"
+        app:civ_border_color="@color/main_color"
+        app:civ_border_width="1dp"
+        app:civ_shadow="true"
+        app:civ_shadow_color="@color/main_color"
+        app:civ_shadow_radius="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextTextChatRoomName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTopicCreateChatRoom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+         />
+
+    <TextView
+        android:id="@+id/textViewChatRoomImageUpload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_a_image"
+        app:layout_constraintTop_toBottomOf="@+id/imgViewChatRoomUploader"
+        app:layout_constraintBottom_toTopOf="@+id/editTextTextChatRoomName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="232dp" />
+
+    <EditText
+        android:id="@+id/editTextTextChatRoomName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_marginTop="50dp"
+        android:hint="@string/chat_room_name"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/editTextTextChatRoomDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTopicCreateChatRoom" />
+
+    <EditText
+        android:id="@+id/editTextTextChatRoomDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_marginTop="92dp"
+        android:hint="Chat Room Description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextChatRoomName" />
+
+    <Button
+        android:id="@+id/btnChatRoomCreateCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="@color/white"
+        android:text="@string/cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextChatRoomDescription" />
+
+    <Button
+        android:id="@+id/btnChatRoomCreateCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="16dp"
+        android:backgroundTint="@color/main_color"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toEndOf="@+id/btnChatRoomCreateCancel"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextChatRoomDescription" />
+</androidx.constraintlayout.widget.ConstraintLayout>

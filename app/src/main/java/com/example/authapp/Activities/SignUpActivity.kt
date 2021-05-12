@@ -10,10 +10,12 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.example.authapp.CommonUtils.CommonUtils
 import com.example.authapp.Constants.Constants
-import com.example.authapp.Models.User
+import com.example.authapp.Models.ChatRoomModel
+import com.example.authapp.Models.UserModel
 import com.example.authapp.R
 import com.facebook.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -31,9 +33,11 @@ import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.google.firebase.auth.FacebookAuthProvider
 import kotlinx.android.synthetic.main.activity_sign_up.editTextPassword
+import kotlin.collections.ArrayList
 
 
 class SignUpActivity : AppCompatActivity() {
+
     private val utils: CommonUtils = CommonUtils()
     private val constant: Constants = Constants()
     private lateinit var auth:FirebaseAuth
@@ -42,6 +46,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var callbackManager: CallbackManager
     private lateinit var buttonFacebookLogin: LoginButton
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
@@ -50,7 +55,7 @@ class SignUpActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         //initialised firestore instance
         firestore = FirebaseFirestore.getInstance()
-
+        progressBarSignUp.visibility = View.GONE
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -60,11 +65,13 @@ class SignUpActivity : AppCompatActivity() {
 
         btnGoogleSignUp.setOnClickListener {
             Log.d("btnGoogle", "Clicked")
+            progressBarSignUp.visibility = View.VISIBLE
             val googleSignInIntent = googleSignInClient.signInIntent
             startActivityForResult(googleSignInIntent, constant.RC_SIGN_IN)
         }
 
         btnSignUp.setOnClickListener {
+            progressBarSignUp.visibility = View.VISIBLE
             if (utils.isNetworkAvailable(applicationContext)) {
                 if (validationCheckInEmailPwdAuth()) {
                     Log.d("Sign Up - emailpwd", "Ok")
@@ -74,6 +81,7 @@ class SignUpActivity : AppCompatActivity() {
                 val snack = Snackbar.make(it, "No Internet Connect", Snackbar.LENGTH_LONG)
                 snack.show()
             }
+            progressBarSignUp.visibility = View.GONE
         }
 
         textViewChooseImage.setOnClickListener {
@@ -104,10 +112,11 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
+    //on start method
     override fun onStart() {
         super.onStart()
         if (auth.currentUser != null){
-            val intent = Intent(applicationContext, HomeActivity::class.java)
+            val intent = Intent(applicationContext, ChatRoomListActivity::class.java)
             finish()
             startActivity(intent)
         }
@@ -184,8 +193,9 @@ class SignUpActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("createAccount", "createUserWithEmail:success")
+                    val userChatRoomModelList: ArrayList<String> = ArrayList()
                     val currentUser = auth.currentUser
-                    userDataSave(currentUser.email, editTextUsername.text.toString(), selectedPhotoUri.toString())
+                    userDataSave(currentUser.email, editTextUsername.text.toString(), selectedPhotoUri.toString(), userChatRoomModelList)
                     Toast.makeText(baseContext, "Authenticated", Toast.LENGTH_SHORT).show()
                 }
                 else {
@@ -198,23 +208,22 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     //firebase authentication
-    private fun userDataSave(email: String, username: String, photoUri: String){
-        Log.d("userDataSave", "Okkkkkkkkkkkkkkkkkkkkk")
+    private fun userDataSave(email: String, username: String, photoUri: String, userChatRoomModelList: ArrayList<String>){
         Log.d("URI", photoUri)
-        val user: User = User(email, username, photoUri)
+        val userModel: UserModel = UserModel(email, username, photoUri, userChatRoomModelList)
         firestore.collection("users")
             .document(auth.currentUser.uid)
-            .set(user)
+            .set(userModel)
             .addOnSuccessListener {
                 Toast.makeText(applicationContext, "Successfully registered", Toast.LENGTH_SHORT).show()
-                Log.d("userDataSave", "user collection success")
                 finish()
-                startActivity(Intent(applicationContext, HomeActivity::class.java))
+                progressBarSignUp.visibility = View.GONE
+                startActivity(Intent(applicationContext, ChatRoomListActivity::class.java))
             }
             .addOnFailureListener{
                 Toast.makeText(applicationContext, "Failed to register", Toast.LENGTH_SHORT).show()
-                Log.d("userDataSave", it.toString())
                 finish()
+                progressBarSignUp.visibility = View.GONE
                 startActivity(Intent(applicationContext, SignUpActivity::class.java))
             }
     }
@@ -235,7 +244,7 @@ class SignUpActivity : AppCompatActivity() {
         Log.d("Google Sign in", "${requestCode == constant.RC_SIGN_IN}")
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode==constant.RC_IMAGE_URI && resultCode == Activity.RESULT_OK && data != null){
-            var tempUri = data.data!!
+                var tempUri = data.data!!
 
                 val filename = UUID.randomUUID().toString()
 
@@ -277,8 +286,9 @@ class SignUpActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("firebaseAuthWithGoogle", "signInWithCredential:success")
+                    val userChatRoomModelList: ArrayList<String> = ArrayList()
                     val user = auth.currentUser
-                    userDataSave(user.email.toString(), user.displayName, user.photoUrl.toString() )
+                    userDataSave(user.email.toString(), user.displayName, user.photoUrl.toString(), userChatRoomModelList)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("firebaseAuthWithGoogle", "signInWithCredential:failure", task.exception)
@@ -288,15 +298,16 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun handleFacebookAccessToken(token: AccessToken) {
         Log.d("handleFacebook", "handleFacebookAccessToken:$token")
-
+        progressBarSignUp.visibility = View.VISIBLE
         val credential = FacebookAuthProvider.getCredential(token.token)
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("handleFacebook", "signInWithCredential:success")
+                        val userChatRoomModelList: ArrayList<String> = ArrayList()
                         val user = auth.currentUser
-                        userDataSave(user.email.toString(), user.displayName, user.photoUrl.toString() )
+                        userDataSave(user.email.toString(), user.displayName, user.photoUrl.toString(), userChatRoomModelList )
 
                     } else {
                         // If sign in fails, display a message to the user.

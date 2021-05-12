@@ -2,11 +2,9 @@
 
 package com.example.authapp.Activities
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -20,10 +18,6 @@ import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
-import com.github.ybq.android.spinkit.sprite.Sprite
-import com.github.ybq.android.spinkit.style.Circle
-import com.github.ybq.android.spinkit.style.DoubleBounce
-import com.github.ybq.android.spinkit.style.Wave
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -32,11 +26,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_sign_in.*
 import kotlinx.android.synthetic.main.activity_sign_in.editTextPassword
-import kotlinx.android.synthetic.main.activity_sign_up.*
-import java.util.*
 
 class SignInActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -48,9 +39,6 @@ class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
-
-        var  circle : Sprite = Circle()
-        progressBarSignIn.setIndeterminateDrawable(circle)
 
         progressBarSignIn.visibility = View.GONE
 
@@ -79,6 +67,7 @@ class SignInActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         btnGoogleSignIn.setOnClickListener {
+            progressBarSignIn.visibility = View.VISIBLE
             if (utils.isNetworkAvailable(applicationContext)) {
                 val signInIntent = googleSignInClient.signInIntent
                 startActivityForResult(signInIntent, constant.RC_SIGN_IN)
@@ -86,6 +75,7 @@ class SignInActivity : AppCompatActivity() {
                 val snack = Snackbar.make(it, "No Internet Connect", Snackbar.LENGTH_LONG)
                 snack.show()
             }
+            progressBarSignIn.visibility = View.GONE
         }
 
         textViewSwitchToSignUP.setOnClickListener {
@@ -111,6 +101,7 @@ class SignInActivity : AppCompatActivity() {
                 Log.d("FB", "facebook:onError", error)
             }
         })
+
     }
 
     //field validation for email password authentication
@@ -156,7 +147,7 @@ class SignInActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("signInWithEmailPassword", "signInWithEmail:success")
                     finish()
-                    startActivity(Intent(applicationContext, HomeActivity::class.java))
+                    startActivity(Intent(applicationContext, ChatRoomListActivity::class.java))
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("signInWithEmailPassword", "signInWithEmail:failure", task.exception)
@@ -164,7 +155,6 @@ class SignInActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT).show()
                 }
             }
-        // [END sign_in_with_email]
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -195,7 +185,7 @@ class SignInActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("firebaseAuthWithGoogle", "signInWithCredential:success")
                     finish()
-                    startActivity(Intent(applicationContext, HomeActivity::class.java))
+                    startActivity(Intent(applicationContext, ChatRoomListActivity::class.java))
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("firebaseAuthWithGoogle", "signInWithCredential:failure", task.exception)
@@ -213,7 +203,8 @@ class SignInActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("handleFacebook", "signInWithCredential:success")
                     finish()
-                    startActivity(Intent(applicationContext, HomeActivity::class.java))
+                    progressBarSignIn.visibility = View.GONE
+                    startActivity(Intent(applicationContext, ChatRoomListActivity::class.java))
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("handleFacebook", "signInWithCredential:failure", task.exception)
