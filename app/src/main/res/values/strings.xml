@@ -42,5 +42,6 @@
     <string name="join">Join</string>
     <string name="name">Name</string>
     <string name="message">Message</string>
+    <string name="enter_message">Enter Message</string>
 
 </resources>

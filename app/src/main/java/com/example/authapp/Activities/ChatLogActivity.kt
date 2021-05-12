@@ -2,17 +2,22 @@
 
 package com.example.authapp.Activities
 
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.example.authapp.R
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.PopupWindow
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.authapp.Constants.Constants
 import com.example.authapp.Models.MessageModel
-import com.example.authapp.R
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -27,8 +32,7 @@ import kotlinx.android.synthetic.main.receive_message.view.*
 import kotlinx.android.synthetic.main.send_message.view.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
+
 
 class ChatLogActivity : AppCompatActivity() {
     private val constant: Constants = Constants()
@@ -48,6 +52,7 @@ class ChatLogActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
 
         val layoutManager = LinearLayoutManager(applicationContext)
+        layoutManager.stackFromEnd = true
         recycler_gchat.layoutManager = layoutManager
         recycler_gchat.itemAnimator = DefaultItemAnimator()
 
@@ -57,8 +62,25 @@ class ChatLogActivity : AppCompatActivity() {
             performMessaging()
         }
 
-        loadMessages()
+//        loadMessages()
+        val docRef = firestore.collection("chatRooms").document(chatRoomID)
+        docRef.addSnapshotListener(this) { value, error ->
+            if (error != null){
+                Toast.makeText(applicationContext, error.toString(), Toast.LENGTH_SHORT).show()
+                Log.d("onstart", error.toString())
+            }
+            if(value?.exists()!!){
+                loadMessages()
+//                adapter.notifyDataSetChanged()
+            }
+        }
+
     }
+
+    override fun onStart() {
+        super.onStart()
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.chat_log_menu, menu)
@@ -68,12 +90,19 @@ class ChatLogActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when(item.itemId){
-            R.id.more_info_chat_room -> Log.d("asd", "asd")
+            R.id.more_info_chat_room -> moreInfoIconFunctionality()
             R.id.menu_profile -> startActivity(Intent(this, ProfileActivity::class.java))
             R.id.menu_logout -> signOutOperation()
         }
         return super.onOptionsItemSelected(item)
 
+    }
+
+
+    private fun moreInfoIconFunctionality(){
+        val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val pw = PopupWindow(inflater.inflate(R.layout.popup_layout, null, false), 100, 100, true)
+        pw.showAtLocation(findViewById(R.id.center_horizontal), Gravity.CENTER, 0, 0)
     }
 
     private fun performMessaging(){
@@ -88,7 +117,8 @@ class ChatLogActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Log.d("Message", "complete")
                 adapter.add(SendItem(messageObj))
-                recycler_gchat.adapter = adapter
+//                recycler_gchat.adapter = adapter
+//                adapter.notifyDataSetChanged()
                 edit_gchat_message.text.clear()
             }
             .addOnFailureListener {
@@ -110,6 +140,12 @@ class ChatLogActivity : AppCompatActivity() {
     }
 
     private fun loadMessages(){
+
+        val docRef = firestore.collection("chatRooms").document(chatRoomID)
+
+//        docRef.addSnapshotListener(EventListener<DocumentSnapshot>(){
+//                Eve
+//        })
         firestore.collection("chatRooms").document(chatRoomID)
             .get()
             .addOnSuccessListener {
@@ -123,6 +159,7 @@ class ChatLogActivity : AppCompatActivity() {
                         val messageObj = MessageModel( i.get("message").toString(), i.get("sender").toString(),
                             i.get("time").toString()
                         )
+
                         adapter.add(SendItem(messageObj))
                     }
                     else{

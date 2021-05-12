@@ -12,9 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.authapp.Adapters.ChatRoomsAdapter
 import com.example.authapp.Constants.Constants
-import com.example.authapp.Models.ChatRoomModel
 import com.example.authapp.R
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -25,7 +23,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
-import kotlinx.android.synthetic.main.activity_all_chat_rooms.*
 import kotlinx.android.synthetic.main.activity_chat_room_list.*
 import kotlinx.android.synthetic.main.chat_room_item.view.*
 
@@ -88,7 +85,7 @@ class ChatRoomListActivity : AppCompatActivity() {
                     AllChatRoomsActivity::class.java
                 )
             )
-            R.id.menu_profile -> startActivity(Intent(this, SignUpActivity::class.java))
+            R.id.menu_profile -> startActivity(Intent(this, ProfileActivity::class.java))
             R.id.menu_logout -> signOutOperation()
         }
         return super.onOptionsItemSelected(item)
